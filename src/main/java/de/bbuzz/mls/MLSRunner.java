@@ -25,7 +25,7 @@ import opennlp.tools.langdetect.LanguageDetectorME;
 import opennlp.tools.langdetect.LanguageDetectorModel;
 
 /**
- *
+ * Runner for demoing {@link LanguageExpandingQueryParser}
  */
 public class MLSRunner {
 
