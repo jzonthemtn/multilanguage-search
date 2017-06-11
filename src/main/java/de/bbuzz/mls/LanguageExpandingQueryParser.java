@@ -30,8 +30,8 @@ public class LanguageExpandingQueryParser extends QueryParser {
   private final Map<String, Collection<Decoder>> decoderMappings;
   private int counter = 0;
 
-  public LanguageExpandingQueryParser(String f, Analyzer a, LanguageDetector languageDetector,
-                                      Map<String, Collection<Decoder>> decoderMappings) {
+  LanguageExpandingQueryParser(String f, Analyzer a, LanguageDetector languageDetector,
+                               Map<String, Collection<Decoder>> decoderMappings) {
     super(f, a);
     this.languageDetector = languageDetector;
     this.decoderMappings = decoderMappings;
@@ -43,29 +43,34 @@ public class LanguageExpandingQueryParser extends QueryParser {
     BooleanQuery.Builder builder = new BooleanQuery.Builder();
 
     // add user entered query
-    builder.add(new BooleanClause(super.parse(query), BooleanClause.Occur.MUST));
+    builder.add(new BooleanClause(super.parse(query), BooleanClause.Occur.SHOULD));
 
     // perform language detection
     Language language = languageDetector.predictLanguage(query);
+    String languageString = language.getLang();
+    System.out.println("detected language " + languageString + " for query '" + query + "'");
 
     // find which joshua model supports the extracted language
-    Collection<Decoder> decoders = decoderMappings.get(language.getLang());
+    Collection<Decoder> decoders = decoderMappings.get(languageString);
 
-    Sentence sentence = new Sentence(query, counter, null);
-    counter++;
+    if (decoders == null) {
+      decoders = decoderMappings.get("eng"); // use default en->xyz decoders
+    }
 
     // perform query translation for each of the joshua models
     for (Decoder d : decoders) {
+      Sentence sentence = new Sentence(query, counter, d.getJoshuaConfiguration());
+      counter++;
+
       Translation translation = d.decode(sentence);
       List<StructuredTranslation> translations = translation.getStructuredTranslations();
 
+      System.out.println("found " + translations.size() + " translations");
       // create and bind corresponding queries
       for (StructuredTranslation st : translations) {
-        // if the translation is good enough it gets parsed and added as a SHOULD query
-        if (st.getTranslationScore() > 0.5f) {
-          String translationString = st.getTranslationString();
-          builder.add(new BooleanClause(super.parse(translationString), BooleanClause.Occur.SHOULD));
-        }
+        System.out.println(st.getFormattedTranslationString());
+        String translationString = st.getTranslationString();
+        builder.add(new BooleanClause(super.parse(translationString), BooleanClause.Occur.SHOULD));
       }
     }
 

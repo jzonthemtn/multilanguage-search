@@ -78,7 +78,11 @@
             <artifactId>opennlp-tools</artifactId>
             <version>1.8.1-SNAPSHOT</version>
         </dependency>
-
+        <dependency>
+            <groupId>colt</groupId>
+            <artifactId>colt</artifactId>
+            <version>1.2.0</version>
+        </dependency>
 
     </dependencies>
     <build>
@@ -96,6 +100,27 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>appassembler-maven-plugin</artifactId>
+                <version>1.1.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assemble</goal>
+                        </goals>
+                        <configuration>
+                            <programs>
+                                <program>
+                                    <mainClass>de.bbuzz.mls.MLSRunner</mainClass>
+                                    <name>mls</name>
+                                </program>
+                            </programs>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
