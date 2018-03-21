@@ -20,6 +20,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -27,20 +28,43 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.compress.compressors.CompressorStreamFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
 
 /**
  * Utility class to import Wikipedia dumps into a Lucene index.
  */
 public class WikipediaImport {
 
+  private static final String MLS_HOME = System.getenv("MLS_HOME");
+  private static Logger LOGGER = LogManager.getLogger(WikipediaImport.class);
+
   private final File dump;
   private final boolean doReport;
   private final String languageCode;
+
+  public static void main(String args[]) throws Exception {
+
+    StandardAnalyzer analyzer = new StandardAnalyzer();
+
+    Directory index = FSDirectory.open(Paths.get(MLS_HOME + "/index"));
+    IndexWriterConfig config = new IndexWriterConfig(analyzer);
+    IndexWriter indexWriter = new IndexWriter(index, config);
+
+    File dump = new File(MLS_HOME + "/dewiki-latest-pages-articles1.xml");
+    WikipediaImport wi = new WikipediaImport(dump, "de", true);
+    wi.importWikipedia(indexWriter);
+
+  }
 
   public WikipediaImport(File dump, String languageCode, boolean doReport) {
     this.dump = dump;
@@ -88,7 +112,7 @@ public class WikipediaImport {
               batchDone(indexWriter, start, count);
             }
 
-            pageAdded(title, text);
+            //pageAdded(title, text);
           }
           break;
       }
@@ -113,9 +137,6 @@ public class WikipediaImport {
           "Added %d pages in %d seconds (%.2fms/page)%n",
           count, millis / 1000, (double) millis / count);
     }
-  }
-
-  protected void pageAdded(String title, String text) {
   }
 
 }
