@@ -57,7 +57,7 @@ public class MLSRunner {
       JoshuaConfiguration deEnConf = new JoshuaConfiguration();
       deEnConf.readConfigFile(deEnJoshuaConfigFile);
       deEnConf.use_structured_output = true;
-deEnConf.modelRootPath = BASE_DIRECTORY + "/apache-joshua-en-de-2017-01-31/";
+      deEnConf.modelRootPath = BASE_DIRECTORY + "/apache-joshua-en-de-2017-01-31/";
 
       System.out.println("setting up decoders");
 

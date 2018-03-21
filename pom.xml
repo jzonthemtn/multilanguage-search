@@ -73,29 +73,49 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-<plugin>
-  <artifactId>maven-assembly-plugin</artifactId>
-  <configuration>
-    <finalName>mlsrunner</finalName>
-    <archive>
-      <manifest>
-        <mainClass>de.bbuzz.mls.MLSRunner</mainClass>
-      </manifest>
-    </archive>
-    <descriptorRefs>
-      <descriptorRef>jar-with-dependencies</descriptorRef>
-    </descriptorRefs>
-  </configuration>
-  <executions>
-    <execution>
-      <id>make-assembly</id>
-      <phase>package</phase>
-      <goals>
-        <goal>single</goal>
-      </goals>
-    </execution>
-  </executions>
-</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>wikipediaimport</id>
+						<configuration>
+							<appendAssemblyId>false</appendAssemblyId>
+							<archive>
+								<manifest>
+									<mainClass>de.bbuzz.mls.WikipediaImport</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<finalName>wikipediaimport</finalName>
+						</configuration>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>mlsrunner</id>
+						<configuration>
+							<appendAssemblyId>false</appendAssemblyId>
+							<archive>
+								<manifest>
+									<mainClass>de.bbuzz.mls.MLSRunner</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<finalName>mlsrunner</finalName>
+						</configuration>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>
