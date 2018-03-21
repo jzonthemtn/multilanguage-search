@@ -2,4 +2,6 @@ files/
 target/
 .classpath
 .project
+.settings
+*.tgz
 
