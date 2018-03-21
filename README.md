@@ -1,10 +1,10 @@
 # Multi-Language Search
 
-This project creates a Lucene index from a Wikipedia dump that can be queried through a custom `QueryParser` that uses Apache Joshua to translate the search term to the language of the index.
+This project creates a Lucene index from a Wikipedia dump that can be queried through a custom `QueryParser` that uses [Apache Joshua](https://cwiki.apache.org/confluence/display/JOSHUA/Apache+Joshua+%28Incubating%29+Home) to translate the search term to the language of the index.
 
 ## Scripts
 
-The `download-data.sh` script downloads the Apache Joshua en-de package, a pre-built index of a subset of the German Wikipedia containing approximately 20,000 articles, and the OpenNLP language detection model. These files are placed in the `./files` directory.
+The `download-data.sh` script downloads the Apache Joshua `en-de` [language pack](https://cwiki.apache.org/confluence/display/JOSHUA/Language+Packs), a pre-built index of a subset of the German Wikipedia containing approximately 20,000 articles, and the [OpenNLP](https://opennlp.apache.org/) language detection model. These files are placed in the `./files` directory.
 
 The `run-wikipediaindexer.sh` script creates a Wikipedia index file if you do not use the one downloaded via the `download-data.sh` script.
 
