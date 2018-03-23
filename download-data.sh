@@ -14,7 +14,5 @@ unzip index.zip
 mv index ./files/
 rm index.zip
 
-# Download the OpenNLP language detection model.
-wget http://www.gtlib.gatech.edu/pub/apache/opennlp/models/langdetect/1.8.3/langdetect-183.bin -O ./files/langdetect-183.bin
 
 
