@@ -1,20 +1,37 @@
 # Multi-Language Search
 
-This project creates a Lucene index from a Wikipedia dump that can be queried through a custom `QueryParser` that uses [Apache Joshua](https://cwiki.apache.org/confluence/display/JOSHUA/Apache+Joshua+%28Incubating%29+Home) to translate the search term to the language of the index.
-
-## Scripts
-
-The `download-data.sh` script downloads the Apache Joshua `en-de` [language pack](https://cwiki.apache.org/confluence/display/JOSHUA/Language+Packs), a pre-built index of a subset of the German Wikipedia containing approximately 20,000 articles, and the [OpenNLP](https://opennlp.apache.org/) language detection model. These files are placed in the `./files` directory.
-
-The `run-wikipediaindexer.sh` script creates a Wikipedia index file if you do not use the one downloaded via the `download-data.sh` script.
-
-The `run-mls.sh` script loads the index and allows querying.
+This project has the ability to create a Lucene index from a Wikipedia dump that can be queried through a custom `QueryParser` that uses [Apache Joshua](https://cwiki.apache.org/confluence/display/JOSHUA/Apache+Joshua+%28Incubating%29+Home) to translate the search term to the language of the index. The project can be executed from the command line or in a NiFi pipline via the included NiFi processors.
 
 ## Usage
 
-Example usage:
+First download the required data. Some of the data is quite big so it may take some time.
 
 ```
+# ./download-data.sh
+```
+
+The `download-data.sh` script downloads the Apache Joshua `en-de` [language pack](https://cwiki.apache.org/confluence/display/JOSHUA/Language+Packs), a pre-built index of a subset of the German Wikipedia containing approximately 20,000 articles, and the [OpenNLP](https://opennlp.apache.org/) language detection model. These files are placed in the `./files` directory.
+
+### NiFi
+
+To run the multi-language search in a NiFi dataflow:
+
+```
+# mvn clean install
+# find . -name "*.nar" -exec cp {} /opt/nifi/lib/
+```
+
+Now start NiFi and create your dataflow. The NiFi processors in this project are:
+
+* `langdetect-processor` - This processor uses [OpenNLP](https://opennlp.apache.org/)'s language detection capability to identify the language of the input text.
+
+### CLI
+
+To run from the command line:
+
+```
+# mvn clean install
+# cd multilanguage-search-runner
 # ./run-mls.sh
 reading Lucene index
 reading Joshua config
@@ -38,6 +55,14 @@ query 'birthday' was parsed as text:birthday text:geburtstag
 ...
 ```
 
+The `run-wikipediaindexer.sh` script creates a Wikipedia index file if you do not use the one downloaded via the `download-data.sh` script.
+
+The `run-mls.sh` script loads the index and allows querying.
+
 ## Credits
 
-Credit to [@tteofili](https://github.com/tteofili) for the initial implementation.
+Credit to [@tteofili](https://github.com/tteofili) for the initial multilang-search implementation.
+
+## License
+
+Licensed under the Apache Software License, v2.
