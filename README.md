@@ -2,6 +2,8 @@
 
 This project has the ability to create a Lucene index from a Wikipedia dump that can be queried through a custom `QueryParser` that uses [Apache Joshua](https://cwiki.apache.org/confluence/display/JOSHUA/Apache+Joshua+%28Incubating%29+Home) to translate the search term to the language of the index. The project can be executed from the command line or in a NiFi pipline via the included NiFi processors.
 
+The OpenNLP langdetect model is included in git lfs.
+
 ## Usage
 
 First download the required data. Some of the data is quite big so it may take some time.
