@@ -9,7 +9,7 @@ mv apache-joshua-en-de-2017-01-31 ./files/apache-joshua-en-de-2017-01-31
 rm apache-joshua-en-de-2017-01-31-phrase.tgz
 
 # Download the index of a Wikipedia subset of German articles.
-wget https://mtnfog-public.s3.amazonaws.com/haystack-04-2018/index.zip
+wget https://www.dropbox.com/s/07gx8snoxfy0iwi/de-wikipedia-lucene-index.zip?dl=0 -O index.zip
 unzip index.zip
 mv index ./files/
 rm index.zip
