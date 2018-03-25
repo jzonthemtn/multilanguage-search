@@ -92,10 +92,6 @@ public class LangDetect extends AbstractProcessor {
 		}
 
 	}
-	
-	 protected FilenameFilter getJarFilenameFilter(){
-		 return (dir, name) -> (name != null && name.endsWith(".bin"));
-	 }
 
 	@Override
 	public Set<Relationship> getRelationships() {
@@ -125,7 +121,9 @@ public class LangDetect extends AbstractProcessor {
 					
 					final String input = IOUtils.toString(inputStream, Charset.forName("UTF-8"));
 					final Language[] languages = languageDetector.predictLanguages(input);
-					language.set(languages[0].getLang());									
+					language.set(languages[0].getLang());				
+					
+					IOUtils.write(input, outputStream, Charset.forName("UTF-8"));
 	
 				}				
 				

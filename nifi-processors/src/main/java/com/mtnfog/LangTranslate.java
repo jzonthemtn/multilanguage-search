@@ -104,10 +104,6 @@ public class LangTranslate extends AbstractProcessor {
 		}
 		
 	}
-	
-	 protected FilenameFilter getJarFilenameFilter(){
-		 return (dir, name) -> (name != null && name.endsWith(".bin"));
-	 }
 
 	@Override
 	public Set<Relationship> getRelationships() {
@@ -135,6 +131,7 @@ public class LangTranslate extends AbstractProcessor {
 				@Override
 				public void process(InputStream inputStream, OutputStream outputStream) throws IOException {
 
+					//final String input = flowFile.getAttribute("language");
 					final String input = IOUtils.toString(inputStream, Charset.forName("UTF-8"));
 
 					Sentence sentence = new Sentence(input, counter++, deDecoder.getJoshuaConfiguration());
