@@ -15,7 +15,6 @@
  */
 package com.mtnfog;
 
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -74,7 +73,7 @@ public class LangTranslate extends AbstractProcessor {
 	
 	private Gson gson;
 	
-	private static final String JOSHUA_PATH = "/mtnfog/code/github/multilanguage-search/files";
+	private static final String JOSHUA_PATH = System.getenv("MLS_HOME") + "/apache-joshua-en-de-2017-01-31";
 	
 	@Override
 	protected void init(final ProcessorInitializationContext context) {
@@ -89,11 +88,11 @@ public class LangTranslate extends AbstractProcessor {
 		try {
 		
 			// TODO: Load stuff here.
-			String deEnJoshuaConfigFile = JOSHUA_PATH + "/apache-joshua-en-de-2017-01-31/joshua.config";
+			String deEnJoshuaConfigFile = JOSHUA_PATH + "/joshua.config";
 			JoshuaConfiguration deEnConf = new JoshuaConfiguration();
 			deEnConf.readConfigFile(deEnJoshuaConfigFile);
 			deEnConf.use_structured_output = true;
-			deEnConf.modelRootPath = JOSHUA_PATH + "/apache-joshua-en-de-2017-01-31/";
+			deEnConf.modelRootPath = JOSHUA_PATH;
 		
 			deDecoder = new Decoder(deEnConf, deEnJoshuaConfigFile);
 			

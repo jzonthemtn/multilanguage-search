@@ -83,7 +83,7 @@ public class WikipediaIndexSearch extends AbstractProcessor {
 	private DirectoryReader directoryReader;
 	private IndexSearcher searcher;
 	
-	private static final String INDEX_PATH = "/mtnfog/code/github/multilanguage-search/files/index";
+	private static final String INDEX_PATH = System.getenv("MLS_HOME") + "/index";
 	
 	@Override
 	protected void init(final ProcessorInitializationContext context) {

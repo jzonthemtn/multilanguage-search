@@ -14,6 +14,13 @@ First download the required data. Some of the data is quite big so it may take s
 
 The `download-data.sh` script downloads the Apache Joshua `en-de` [language pack](https://cwiki.apache.org/confluence/display/JOSHUA/Language+Packs), a pre-built index of a subset of the German Wikipedia containing approximately 20,000 articles, and the [OpenNLP](https://opennlp.apache.org/) language detection model. These files are placed in the `./files` directory.
 
+Now export the path to the data.
+
+```
+CUR_DIR=`pwd`
+export MLS_HOME="$CUR_DIR/files"
+```
+
 ### NiFi
 
 Here's an example flow using the processors. Note that in this example the `langdetect` processor isn't really doing a whole lot since only a single index is searched but that's easily made more robust.
