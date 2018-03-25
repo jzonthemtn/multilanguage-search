@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>haystack18</groupId>
-            <artifactId>langdetect-nifi-processor</artifactId>
+            <artifactId>nifi-processors</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
