@@ -16,6 +16,10 @@ The `download-data.sh` script downloads the Apache Joshua `en-de` [language pack
 
 ### NiFi
 
+Here's an example flow using the processors. Note that in this example the `langdetect` processor isn't really doing a whole lot since only a single index is searched but that's easily made more robust.
+
+![Flow](https://raw.githubusercontent.com/jzonthemtn/multilanguage-search/master/example-nifi-flow.png)
+
 To run the multi-language search in a NiFi dataflow:
 
 ```
