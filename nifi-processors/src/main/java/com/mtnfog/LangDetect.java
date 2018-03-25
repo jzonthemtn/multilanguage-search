@@ -24,6 +24,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.nifi.annotation.behavior.ReadsAttribute;
 import org.apache.nifi.annotation.behavior.ReadsAttributes;
@@ -65,6 +67,7 @@ public class LangDetect extends AbstractProcessor {
 	private Set<Relationship> relationships;
 	
 	private LanguageDetector languageDetector;
+	final AtomicReference<String> language = new AtomicReference<>(null);
 	
 	@Override
 	protected void init(final ProcessorInitializationContext context) {
@@ -107,35 +110,35 @@ public class LangDetect extends AbstractProcessor {
 	@Override
 	public void onTrigger(final ProcessContext ctx,	final ProcessSession session) throws ProcessException {
 		
-		if (session.get() == null) {
+		FlowFile flowFile = session.get();
+
+		if (flowFile == null) {
 			return;
 		}
-		
-		final FlowFile f = session.get();
 
 		try {
 						
-			FlowFile flowFile = session.write(f, new StreamCallback() {
+			flowFile = session.write(flowFile, new StreamCallback() {
 				
 				@Override
 				public void process(InputStream inputStream, OutputStream outputStream) throws IOException {
 					
 					final String input = IOUtils.toString(inputStream, Charset.forName("UTF-8"));
 					final Language[] languages = languageDetector.predictLanguages(input);
-					final String language = languages[0].getLang();
-
-					session.putAttribute(f, "language", language);
+					language.set(languages[0].getLang());									
 	
 				}				
 				
 			});
+			
+			session.putAttribute(flowFile, "language", language.get());
 
 			session.transfer(flowFile, REL_SUCCESS);
 			
 		} catch (Exception ex) {
 			
 			getLogger().error(String.format("Unable to detect language. Exception: %s", ex.getMessage()), ex);
-			session.transfer(f, REL_FAILURE);
+			session.transfer(flowFile, REL_FAILURE);
 			
 		}
 
