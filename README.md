@@ -23,6 +23,8 @@ To run the multi-language search in a NiFi dataflow:
 # find . -name "*.nar" -exec cp {} /opt/nifi/lib/
 ```
 
+Modify NiFI's `bootstrap.conf` to increase the `Xmx` parameter to `8g`. This is required to load the Apache Joshua model(s) and Wikipedia index searcher in memory.
+
 Now start NiFi and create your dataflow. The NiFi processors in this project are:
 
 * `langdetect-processor` - This processor uses [OpenNLP](https://opennlp.apache.org/)'s language detection capability to identify the language of the input text.

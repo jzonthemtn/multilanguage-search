@@ -107,15 +107,15 @@ public class LangDetect extends AbstractProcessor {
 	@Override
 	public void onTrigger(final ProcessContext ctx,	final ProcessSession session) throws ProcessException {
 		
-		FlowFile flowFile = session.get();
-		
-		if (flowFile == null) {
+		if (session.get() == null) {
 			return;
 		}
+		
+		final FlowFile f = session.get();
 
 		try {
 						
-			flowFile = session.write(flowFile, new StreamCallback() {
+			FlowFile flowFile = session.write(f, new StreamCallback() {
 				
 				@Override
 				public void process(InputStream inputStream, OutputStream outputStream) throws IOException {
@@ -124,18 +124,18 @@ public class LangDetect extends AbstractProcessor {
 					final Language[] languages = languageDetector.predictLanguages(input);
 					final String language = languages[0].getLang();
 
-					IOUtils.write(language, outputStream, Charset.forName("UTF-8"));							
+					session.putAttribute(f, "language", language);
 	
-				}
+				}				
 				
 			});
-			
+
 			session.transfer(flowFile, REL_SUCCESS);
 			
 		} catch (Exception ex) {
 			
 			getLogger().error(String.format("Unable to detect language. Exception: %s", ex.getMessage()), ex);
-			session.transfer(flowFile, REL_FAILURE);
+			session.transfer(f, REL_FAILURE);
 			
 		}
 
