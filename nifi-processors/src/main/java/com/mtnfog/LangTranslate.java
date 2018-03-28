@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -39,6 +40,7 @@ import org.apache.nifi.annotation.behavior.WritesAttributes;
 import org.apache.nifi.annotation.documentation.CapabilityDescription;
 import org.apache.nifi.annotation.documentation.SeeAlso;
 import org.apache.nifi.annotation.documentation.Tags;
+import org.apache.nifi.annotation.lifecycle.OnScheduled;
 import org.apache.nifi.components.PropertyDescriptor;
 import org.apache.nifi.flowfile.FlowFile;
 import org.apache.nifi.processor.AbstractProcessor;
@@ -48,6 +50,7 @@ import org.apache.nifi.processor.ProcessorInitializationContext;
 import org.apache.nifi.processor.Relationship;
 import org.apache.nifi.processor.exception.ProcessException;
 import org.apache.nifi.processor.io.StreamCallback;
+import org.apache.nifi.processor.util.StandardValidators;
 
 import com.google.gson.Gson;
 
@@ -73,7 +76,12 @@ public class LangTranslate extends AbstractProcessor {
 	
 	private Gson gson;
 	
-	private static final String JOSHUA_PATH = System.getenv("MLS_HOME") + "/apache-joshua-en-de-2017-01-31";
+	public static final PropertyDescriptor APACHE_JOSHUA_PATH = new PropertyDescriptor.Builder()
+	        .name("Apache Joshua Path")
+	        .required(true)
+	        .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
+	        .defaultValue("/opt/apache-joshua-en-de-2017-01-31")
+	        .build();
 	
 	@Override
 	protected void init(final ProcessorInitializationContext context) {
@@ -83,16 +91,26 @@ public class LangTranslate extends AbstractProcessor {
 		relationships.add(REL_FAILURE);
 		relationships = Collections.unmodifiableSet(relationships);
 			
+		List<PropertyDescriptor> properties = new ArrayList<>();
+	    properties.add(APACHE_JOSHUA_PATH);
+	    descriptors = Collections.unmodifiableList(properties);
+		
 		gson = new Gson();
 		
+	}
+	
+	@OnScheduled
+	public void setup(ProcessContext context) {
+
 		try {
-		
-			// TODO: Load stuff here.
-			String deEnJoshuaConfigFile = JOSHUA_PATH + "/joshua.config";
+			
+			final String joshuaPath = context.getProperty(APACHE_JOSHUA_PATH).getValue();
+			
+			String deEnJoshuaConfigFile = joshuaPath + "/joshua.config";
 			JoshuaConfiguration deEnConf = new JoshuaConfiguration();
 			deEnConf.readConfigFile(deEnJoshuaConfigFile);
 			deEnConf.use_structured_output = true;
-			deEnConf.modelRootPath = JOSHUA_PATH;
+			deEnConf.modelRootPath = joshuaPath;
 		
 			deDecoder = new Decoder(deEnConf, deEnJoshuaConfigFile);
 			

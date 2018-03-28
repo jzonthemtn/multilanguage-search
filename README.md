@@ -31,7 +31,7 @@ To run the multi-language search in a NiFi dataflow:
 
 ```
 # mvn clean install
-# find . -name "*.nar" -exec cp {} /opt/nifi/lib/
+# cp nifi-processors-nar/target/multilanguage-search-nifi.nar /opt/nifi/lib/
 ```
 
 Modify NiFI's `bootstrap.conf` to increase the `Xmx` parameter to `8g`. This is required to load the Apache Joshua model(s) and Wikipedia index searcher in memory.

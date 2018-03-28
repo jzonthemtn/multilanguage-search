@@ -15,7 +15,6 @@
  */
 package com.mtnfog;
 
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;

@@ -26,6 +26,7 @@ import org.apache.nifi.util.MockFlowFile;
 import org.apache.nifi.util.TestRunner;
 import org.apache.nifi.util.TestRunners;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mtnfog.LangTranslate;
@@ -39,6 +40,7 @@ public class LangTranslateTest {
     	runner = TestRunners.newTestRunner(LangTranslate.class);
     }
 
+    @Ignore
     @Test
     public void translate() throws IOException {
 

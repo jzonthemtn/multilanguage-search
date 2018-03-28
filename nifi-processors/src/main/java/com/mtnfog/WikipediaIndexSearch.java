@@ -21,6 +21,7 @@ import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -49,6 +50,7 @@ import org.apache.nifi.annotation.behavior.WritesAttributes;
 import org.apache.nifi.annotation.documentation.CapabilityDescription;
 import org.apache.nifi.annotation.documentation.SeeAlso;
 import org.apache.nifi.annotation.documentation.Tags;
+import org.apache.nifi.annotation.lifecycle.OnScheduled;
 import org.apache.nifi.components.PropertyDescriptor;
 import org.apache.nifi.flowfile.FlowFile;
 import org.apache.nifi.processor.AbstractProcessor;
@@ -58,6 +60,7 @@ import org.apache.nifi.processor.ProcessorInitializationContext;
 import org.apache.nifi.processor.Relationship;
 import org.apache.nifi.processor.exception.ProcessException;
 import org.apache.nifi.processor.io.StreamCallback;
+import org.apache.nifi.processor.util.StandardValidators;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -83,8 +86,13 @@ public class WikipediaIndexSearch extends AbstractProcessor {
 	private DirectoryReader directoryReader;
 	private IndexSearcher searcher;
 	
-	private static final String INDEX_PATH = System.getenv("MLS_HOME") + "/index";
-	
+	public static final PropertyDescriptor WIKIPEDIA_INDEX_PATH = new PropertyDescriptor.Builder()
+	        .name("Wikipedia Index Path")
+	        .required(true)
+	        .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
+	        .defaultValue("/opt/de-wikipedia-lucene-index")
+	        .build();
+
 	@Override
 	protected void init(final ProcessorInitializationContext context) {
 
@@ -92,12 +100,23 @@ public class WikipediaIndexSearch extends AbstractProcessor {
 		relationships.add(REL_SUCCESS);
 		relationships.add(REL_FAILURE);
 		relationships = Collections.unmodifiableSet(relationships);
+		
+		List<PropertyDescriptor> properties = new ArrayList<>();
+	    properties.add(WIKIPEDIA_INDEX_PATH);
+	    descriptors = Collections.unmodifiableList(properties);
 			
 		gson = new Gson();
 		
-		try {
+	}
+	
+	@OnScheduled
+	public void setup(ProcessContext context) {
+
+		final String wikipediaIndexPath = context.getProperty(WIKIPEDIA_INDEX_PATH).getValue();
 		
-		    Directory directory = FSDirectory.open(Paths.get(INDEX_PATH));
+		try {
+			
+		    Directory directory = FSDirectory.open(Paths.get(wikipediaIndexPath));
 		    directoryReader = DirectoryReader.open(directory);
 		    searcher = new IndexSearcher(directoryReader);
 			

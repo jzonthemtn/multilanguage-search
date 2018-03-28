@@ -12,6 +12,9 @@
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <source.skip>true</source.skip>
     </properties>
+    <build>
+        <finalName>multilanguage-search-nifi</finalName>
+    </build>
     <dependencies>
         <dependency>
             <groupId>haystack18</groupId>
