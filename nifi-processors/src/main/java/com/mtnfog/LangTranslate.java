@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.joshua.decoder.Decoder;
@@ -83,6 +84,10 @@ public class LangTranslate extends AbstractProcessor {
 	        .defaultValue("/opt/apache-joshua-en-de-2017-01-31")
 	        .build();
 	
+	final AtomicReference<String> processorName = new AtomicReference<>(null);
+	final AtomicReference<String> originalQuery = new AtomicReference<>(null);
+	final AtomicReference<String> translations = new AtomicReference<>(null);
+	
 	@Override
 	protected void init(final ProcessorInitializationContext context) {
 
@@ -102,6 +107,8 @@ public class LangTranslate extends AbstractProcessor {
 	@OnScheduled
 	public void setup(ProcessContext context) {
 
+		processorName.set(context.getName());
+		
 		try {
 			
 			final String joshuaPath = context.getProperty(APACHE_JOSHUA_PATH).getValue();
@@ -146,29 +153,34 @@ public class LangTranslate extends AbstractProcessor {
 			flowFile = session.write(flowFile, new StreamCallback() {
 
 				@Override
-				public void process(InputStream inputStream, OutputStream outputStream) throws IOException {
-
-					//final String input = flowFile.getAttribute("language");
+				public void process(InputStream inputStream, OutputStream outputStream) throws IOException {					
+					
 					final String input = IOUtils.toString(inputStream, Charset.forName("UTF-8"));
 
+					originalQuery.set(input);
+					
 					Sentence sentence = new Sentence(input, counter++, deDecoder.getJoshuaConfiguration());
 					Translation translation = deDecoder.decode(sentence);
-					List<StructuredTranslation> translations = translation.getStructuredTranslations();
+					List<StructuredTranslation> structuredTranslations = translation.getStructuredTranslations();
 					
 					List<String> t = new LinkedList<>();
-					t.add(input);
+					//t.add(input);
 					
-					for (StructuredTranslation st : translations) {
+					for (StructuredTranslation st : structuredTranslations) {
 						t.add(st.getTranslationString());
 					}
 					
 					final String json = gson.toJson(t);
+					translations.set(json);
 					
 					IOUtils.write(json, outputStream, Charset.forName("UTF-8"));							
 
 				}
 
 			});
+			
+			session.putAttribute(flowFile, "original-query", processorName.get() + "-" + originalQuery.get());
+			session.putAttribute(flowFile, "translations", processorName.get() + "-" + translations.get());
 
 			session.transfer(flowFile, REL_SUCCESS);
 
