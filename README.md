@@ -2,6 +2,8 @@
 
 This project has the ability to create a Lucene index from a Wikipedia dump that can be queried through a custom `QueryParser` that uses [Apache Joshua](https://cwiki.apache.org/confluence/display/JOSHUA/Apache+Joshua+%28Incubating%29+Home) to translate the search term to the language of the index. The project can be executed from the command line or in a NiFi pipline via the included NiFi processors.
 
+For better performance and more real-world applicability, the NiFi flow created from this project uses an Elasticsearch index of a subnet of the Wikipedia dumps instead of the generated Lucene index.
+
 The OpenNLP langdetect model is included in git lfs.
 
 ## Usage
@@ -23,7 +25,7 @@ export MLS_HOME="$CUR_DIR/files"
 
 ### NiFi
 
-Here's an example flow using the processors. Note that in this example the `langdetect` processor isn't really doing a whole lot since only a single index is searched but that's easily made more robust.
+Here's an example flow using the processors. The flow reads files of search terms from the file system. The search terms are read one per line from each file. Language detection is then applied to each search term to appropriately route the search term to the next processor. English search terms are used to query the index, and German search terms are translated to English prior to searching.
 
 ![Flow](https://raw.githubusercontent.com/jzonthemtn/multilanguage-search/master/example-nifi-flow.png)
 
@@ -34,11 +36,12 @@ To run the multi-language search in a NiFi dataflow:
 # cp nifi-processors-nar/target/multilanguage-search-nifi.nar /opt/nifi/lib/
 ```
 
-Modify NiFI's `bootstrap.conf` to increase the `Xmx` parameter to `8g`. This is required to load the Apache Joshua model(s) and Wikipedia index searcher in memory.
+Modify NiFI's `bootstrap.conf` to increase the `Xmx` parameter to `8g`. This is required to load the Apache Joshua model(s).
 
 Now start NiFi and create your dataflow. The NiFi processors in this project are:
 
 * `langdetect-processor` - This processor uses [OpenNLP](https://opennlp.apache.org/)'s language detection capability to identify the language of the input text.
+* `langtranslate-processor` - This processor uses Apache Joshua to translate the text. Note that this processor calls Joshua directly. An improvement would be to use Joshu'a built-in REST endpoint.
 
 ### CLI
 
