@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Here for convenience. Some of these files may not be required.
+
 mkdir -p files
 
 # Download the Apache Joshua en-de archive.
