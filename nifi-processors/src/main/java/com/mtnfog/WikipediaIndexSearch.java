@@ -16,10 +16,9 @@
 package com.mtnfog;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,7 +58,6 @@ import org.apache.nifi.processor.ProcessSession;
 import org.apache.nifi.processor.ProcessorInitializationContext;
 import org.apache.nifi.processor.Relationship;
 import org.apache.nifi.processor.exception.ProcessException;
-import org.apache.nifi.processor.io.StreamCallback;
 import org.apache.nifi.processor.util.StandardValidators;
 
 import com.google.gson.Gson;
@@ -67,16 +65,16 @@ import com.google.gson.reflect.TypeToken;
 
 @Tags({ "search, lucene, wikipedia" })
 @CapabilityDescription("Performs search against Wikipedia index.")
-@SeeAlso({})
-@ReadsAttributes({ @ReadsAttribute(attribute = "", description = "") })
-@WritesAttributes({ @WritesAttribute(attribute = "", description = "") })
+@SeeAlso()
+@ReadsAttributes({ @ReadsAttribute(attribute = "") })
+@WritesAttributes({ @WritesAttribute(attribute = "") })
 @SideEffectFree
 public class WikipediaIndexSearch extends AbstractProcessor {
 	
 	public static final Relationship REL_SUCCESS = new Relationship.Builder()
 			.name("success").description("success").build();
 
-	public static final Relationship REL_FAILURE = new Relationship.Builder()
+	private static final Relationship REL_FAILURE = new Relationship.Builder()
 			.name("failure").description("failure").build();
 
 	private List<PropertyDescriptor> descriptors;
@@ -86,7 +84,7 @@ public class WikipediaIndexSearch extends AbstractProcessor {
 	private DirectoryReader directoryReader;
 	private IndexSearcher searcher;
 	
-	public static final PropertyDescriptor WIKIPEDIA_INDEX_PATH = new PropertyDescriptor.Builder()
+	private static final PropertyDescriptor WIKIPEDIA_INDEX_PATH = new PropertyDescriptor.Builder()
 	        .name("Wikipedia Index Path")
 	        .required(true)
 	        .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
@@ -96,7 +94,7 @@ public class WikipediaIndexSearch extends AbstractProcessor {
 	@Override
 	protected void init(final ProcessorInitializationContext context) {
 
-		relationships = new HashSet<Relationship>();
+		relationships = new HashSet<>();
 		relationships.add(REL_SUCCESS);
 		relationships.add(REL_FAILURE);
 		relationships = Collections.unmodifiableSet(relationships);
@@ -149,49 +147,44 @@ public class WikipediaIndexSearch extends AbstractProcessor {
 
 		try {
 
-			flowFile = session.write(flowFile, new StreamCallback() {
+			flowFile = session.write(flowFile, (inputStream, outputStream) -> {
 
-				@Override
-				public void process(InputStream inputStream, OutputStream outputStream) throws IOException {
+                final String input = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
 
-					final String input = IOUtils.toString(inputStream, Charset.forName("UTF-8"));
-					
-					Type jsonString = new TypeToken<List<String>>(){}.getType();
-					List<String> translations = gson.fromJson(input, jsonString);
-					
-					QueryParser queryParser = new QueryParser("text", new StandardAnalyzer());
-					
-					BooleanQuery.Builder builder = new BooleanQuery.Builder();
-					
-					try {
-					
-					for(String translation : translations) {
-						builder.add(new BooleanClause(queryParser.parse(translation), BooleanClause.Occur.SHOULD));
-					}
-					
-					} catch (ParseException ex) {
-						getLogger().error("Unable to parse query term: " + ex.getMessage());
-					}
-					
-					Query query = builder.build();
-					
-					TopDocs topDocs = searcher.search(query, 5);
-					
-					List<String> results = new LinkedList<>();
-					
-					int dn = 1;
-					for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
-						Document document = directoryReader.document(scoreDoc.doc);
-						System.out.println(dn + ". " + document.get("title") + " (" + document.get("lang") + ")");
-						results.add(document.get("title") + " (" + document.get("lang") + ")");
-						dn++;
-					}
-					
-					IOUtils.write(gson.toJson(results), outputStream, Charset.forName("UTF-8"));							
+                Type jsonString = new TypeToken<List<String>>(){}.getType();
+                List<String> translations = gson.fromJson(input, jsonString);
 
-				}
+                QueryParser queryParser = new QueryParser("text", new StandardAnalyzer());
 
-			});
+                BooleanQuery.Builder builder = new BooleanQuery.Builder();
+
+                try {
+
+                for(String translation : translations) {
+                    builder.add(new BooleanClause(queryParser.parse(translation), BooleanClause.Occur.SHOULD));
+                }
+
+                } catch (ParseException ex) {
+                    getLogger().error("Unable to parse query term: " + ex.getMessage());
+                }
+
+                Query query = builder.build();
+
+                TopDocs topDocs = searcher.search(query, 5);
+
+                List<String> results = new LinkedList<>();
+
+                int dn = 1;
+                for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
+                    Document document = directoryReader.document(scoreDoc.doc);
+                    System.out.println(dn + ". " + document.get("title") + " (" + document.get("lang") + ")");
+                    results.add(document.get("title") + " (" + document.get("lang") + ")");
+                    dn++;
+                }
+
+                IOUtils.write(gson.toJson(results), outputStream, Charset.forName("UTF-8"));
+
+            });
 
 			session.transfer(flowFile, REL_SUCCESS);
 

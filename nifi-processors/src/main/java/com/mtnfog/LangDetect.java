@@ -17,8 +17,7 @@ package com.mtnfog;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -42,7 +41,6 @@ import org.apache.nifi.processor.ProcessSession;
 import org.apache.nifi.processor.ProcessorInitializationContext;
 import org.apache.nifi.processor.Relationship;
 import org.apache.nifi.processor.exception.ProcessException;
-import org.apache.nifi.processor.io.StreamCallback;
 import opennlp.tools.langdetect.Language;
 import opennlp.tools.langdetect.LanguageDetector;
 import opennlp.tools.langdetect.LanguageDetectorME;
@@ -50,28 +48,28 @@ import opennlp.tools.langdetect.LanguageDetectorModel;
 
 @Tags({ "opennlp, nlp, language" })
 @CapabilityDescription("Performs NLP language detection using OpenNLP.")
-@SeeAlso({})
-@ReadsAttributes({ @ReadsAttribute(attribute = "", description = "") })
-@WritesAttributes({ @WritesAttribute(attribute = "", description = "") })
+@SeeAlso()
+@ReadsAttributes({ @ReadsAttribute(attribute = "") })
+@WritesAttributes({ @WritesAttribute(attribute = "") })
 @SideEffectFree
 public class LangDetect extends AbstractProcessor {
 	
 	public static final Relationship REL_SUCCESS = new Relationship.Builder()
 			.name("success").description("success").build();
 
-	public static final Relationship REL_FAILURE = new Relationship.Builder()
+	private static final Relationship REL_FAILURE = new Relationship.Builder()
 			.name("failure").description("failure").build();
 
 	private List<PropertyDescriptor> descriptors;
 	private Set<Relationship> relationships;
 	
 	private LanguageDetector languageDetector;
-	final AtomicReference<String> language = new AtomicReference<>(null);
+	private final AtomicReference<String> language = new AtomicReference<>(null);
 	
 	@Override
 	protected void init(final ProcessorInitializationContext context) {
 
-		relationships = new HashSet<Relationship>();
+		relationships = new HashSet<>();
 		relationships.add(REL_SUCCESS);
 		relationships.add(REL_FAILURE);
 		relationships = Collections.unmodifiableSet(relationships);
@@ -113,20 +111,15 @@ public class LangDetect extends AbstractProcessor {
 
 		try {
 						
-			flowFile = session.write(flowFile, new StreamCallback() {
-				
-				@Override
-				public void process(InputStream inputStream, OutputStream outputStream) throws IOException {
-					
-					final String input = IOUtils.toString(inputStream, Charset.forName("UTF-8"));
-					final Language[] languages = languageDetector.predictLanguages(input);
-					language.set(languages[0].getLang());				
-					
-					IOUtils.write(input, outputStream, Charset.forName("UTF-8"));
-	
-				}				
-				
-			});
+			flowFile = session.write(flowFile, (inputStream, outputStream) -> {
+
+                final String input = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+                final Language[] languages = languageDetector.predictLanguages(input);
+                language.set(languages[0].getLang());
+
+                IOUtils.write(input, outputStream, StandardCharsets.UTF_8);
+
+            });
 			
 			session.putAttribute(flowFile, "language", language.get());
 
