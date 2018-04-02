@@ -10,7 +10,9 @@ The OpenNLP langdetect model is included in `git lfs`.
 
 ### Apache NiFi Flow
 
-Here's an example flow using the processors in this repository. The flow reads files of search terms from the file system. The search terms are read one per line from each file. Language detection is then applied to each search term to appropriately route the search term to the next processor. English search terms are used to query the index, and German search terms are translated to English prior to searching.
+Here's an example flow using the processors in this repository. The flow reads files of search terms from the file system and follows an "English in, English out" approach.
+
+Each search term is translated to one of several languages. Each of these languages has a subset of Wikipedia indexed in a local Elasticsearch. The search results are returned and translated back to English.
 
 ![Flow](https://raw.githubusercontent.com/jzonthemtn/multilanguage-search/master/example-nifi-flow.png)
 
