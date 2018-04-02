@@ -181,7 +181,7 @@ public class LangTranslate extends AbstractProcessor {
 
 			});
 			
-			session.putAttribute(flowFile, "original-query", processorName.get() + "-" + originalQuery.get());
+			//session.putAttribute(flowFile, "original-query", processorName.get() + "-" + originalQuery.get());
 			//session.putAttribute(flowFile, "translations", processorName.get() + "-" + translations.get());
 
 			session.transfer(flowFile, REL_SUCCESS);
