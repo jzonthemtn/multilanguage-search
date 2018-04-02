@@ -161,7 +161,7 @@ public class LangTranslate extends AbstractProcessor {
 					
 					Sentence sentence = new Sentence(input, counter++, deDecoder.getJoshuaConfiguration());
 					Translation translation = deDecoder.decode(sentence);
-					List<StructuredTranslation> structuredTranslations = translation.getStructuredTranslations();
+					/*List<StructuredTranslation> structuredTranslations = translation.getStructuredTranslations();
 					
 					List<String> t = new LinkedList<>();
 					//t.add(input);
@@ -171,16 +171,18 @@ public class LangTranslate extends AbstractProcessor {
 					}
 					
 					final String json = gson.toJson(t);
-					translations.set(json);
+					translations.set(json);*/
+
+					String t = translation.getStructuredTranslations().get(0).getFormattedTranslationString();
 					
-					IOUtils.write(json, outputStream, Charset.forName("UTF-8"));							
+					IOUtils.write(t, outputStream, Charset.forName("UTF-8"));							
 
 				}
 
 			});
 			
 			session.putAttribute(flowFile, "original-query", processorName.get() + "-" + originalQuery.get());
-			session.putAttribute(flowFile, "translations", processorName.get() + "-" + translations.get());
+			//session.putAttribute(flowFile, "translations", processorName.get() + "-" + translations.get());
 
 			session.transfer(flowFile, REL_SUCCESS);
 
