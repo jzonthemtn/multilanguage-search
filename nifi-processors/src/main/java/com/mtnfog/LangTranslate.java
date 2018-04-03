@@ -16,13 +16,11 @@
 package com.mtnfog;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
@@ -50,23 +48,22 @@ import org.apache.nifi.processor.ProcessSession;
 import org.apache.nifi.processor.ProcessorInitializationContext;
 import org.apache.nifi.processor.Relationship;
 import org.apache.nifi.processor.exception.ProcessException;
-import org.apache.nifi.processor.io.StreamCallback;
 import org.apache.nifi.processor.util.StandardValidators;
 
 import com.google.gson.Gson;
 
 @Tags({ "joshua, nlp, translate" })
 @CapabilityDescription("Performs language translation using Apache Joshua.")
-@SeeAlso({})
-@ReadsAttributes({ @ReadsAttribute(attribute = "", description = "") })
-@WritesAttributes({ @WritesAttribute(attribute = "", description = "") })
+@SeeAlso()
+@ReadsAttributes({ @ReadsAttribute(attribute = "") })
+@WritesAttributes({ @WritesAttribute(attribute = "") })
 @SideEffectFree
 public class LangTranslate extends AbstractProcessor {
 	
 	public static final Relationship REL_SUCCESS = new Relationship.Builder()
 			.name("success").description("success").build();
 
-	public static final Relationship REL_FAILURE = new Relationship.Builder()
+	private static final Relationship REL_FAILURE = new Relationship.Builder()
 			.name("failure").description("failure").build();
 
 	private List<PropertyDescriptor> descriptors;
@@ -74,24 +71,24 @@ public class LangTranslate extends AbstractProcessor {
 	
 	private Decoder deDecoder;
 	private int counter = 0;
-	
+
 	private Gson gson;
-	
-	public static final PropertyDescriptor APACHE_JOSHUA_PATH = new PropertyDescriptor.Builder()
+
+	private static final PropertyDescriptor APACHE_JOSHUA_PATH = new PropertyDescriptor.Builder()
 	        .name("Apache Joshua Path")
 	        .required(true)
 	        .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
 	        .defaultValue("/opt/apache-joshua-en-de-2017-01-31")
 	        .build();
 	
-	final AtomicReference<String> processorName = new AtomicReference<>(null);
-	final AtomicReference<String> originalQuery = new AtomicReference<>(null);
-	final AtomicReference<String> translations = new AtomicReference<>(null);
+	private final AtomicReference<String> processorName = new AtomicReference<>(null);
+	private final AtomicReference<String> originalQuery = new AtomicReference<>(null);
+	private final AtomicReference<String> translations = new AtomicReference<>(null);
 	
 	@Override
 	protected void init(final ProcessorInitializationContext context) {
 
-		relationships = new HashSet<Relationship>();
+		relationships = new HashSet<>();
 		relationships.add(REL_SUCCESS);
 		relationships.add(REL_FAILURE);
 		relationships = Collections.unmodifiableSet(relationships);
@@ -99,7 +96,7 @@ public class LangTranslate extends AbstractProcessor {
 		List<PropertyDescriptor> properties = new ArrayList<>();
 	    properties.add(APACHE_JOSHUA_PATH);
 	    descriptors = Collections.unmodifiableList(properties);
-		
+
 		gson = new Gson();
 		
 	}
@@ -150,36 +147,33 @@ public class LangTranslate extends AbstractProcessor {
 
 		try {
 
-			flowFile = session.write(flowFile, new StreamCallback() {
+			flowFile = session.write(flowFile, (inputStream, outputStream) -> {
 
-				@Override
-				public void process(InputStream inputStream, OutputStream outputStream) throws IOException {					
-					
-					final String input = IOUtils.toString(inputStream, Charset.forName("UTF-8"));
+                final String input = IOUtils.toString(inputStream, Charset.forName("UTF-8"));
 
-					originalQuery.set(input);
-					
-					Sentence sentence = new Sentence(input, counter++, deDecoder.getJoshuaConfiguration());
-					Translation translation = deDecoder.decode(sentence);
-					/*List<StructuredTranslation> structuredTranslations = translation.getStructuredTranslations();
-					
-					List<String> t = new LinkedList<>();
-					//t.add(input);
-					
-					for (StructuredTranslation st : structuredTranslations) {
-						t.add(st.getTranslationString());
-					}
-					
-					final String json = gson.toJson(t);
-					translations.set(json);*/
+                originalQuery.set(input);
 
-					String t = translation.getStructuredTranslations().get(0).getFormattedTranslationString();
-					
-					IOUtils.write(t, outputStream, Charset.forName("UTF-8"));							
+                Sentence sentence = new Sentence(input, counter++, deDecoder.getJoshuaConfiguration());
+                Translation translation = deDecoder.decode(sentence);
+                /*List<StructuredTranslation> structuredTranslations = translation.getStructuredTranslations();
 
-				}
+                List<String> t = new LinkedList<>();
+                //t.add(input);
 
-			});
+                for (StructuredTranslation st : structuredTranslations) {
+                    t.add(st.getTranslationString());
+                }
+
+                final String json = gson.toJson(t);
+                translations.set(json);*/
+
+                List<StructuredTranslation> translations = translation.getStructuredTranslations();
+                String t = translations.get(0).getFormattedTranslationString()
+                    + ":" + translations.get(0).getTranslationScore();
+
+                IOUtils.write(t, outputStream, StandardCharsets.UTF_8);
+
+            });
 			
 			//session.putAttribute(flowFile, "original-query", processorName.get() + "-" + originalQuery.get());
 			//session.putAttribute(flowFile, "translations", processorName.get() + "-" + translations.get());
