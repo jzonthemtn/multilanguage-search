@@ -1,0 +1,1295 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<template encoding-version="1.2">
+    <description></description>
+    <groupId>6d5e407a-0162-1000-8f0c-50df8066c4e2</groupId>
+    <name>multilang-search-with-elasticsearch</name>
+    <snippet>
+        <connections>
+            <id>99e58bdc-e081-3794-0000-000000000000</id>
+            <parentGroupId>be898f61-6de5-37e4-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>687e92c8-b45f-3e62-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <name></name>
+            <selectedRelationships>deu</selectedRelationships>
+            <source>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>3d6f19c7-dd31-398e-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>c6fca94e-42be-32ac-0000-000000000000</id>
+            <parentGroupId>be898f61-6de5-37e4-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>71416e21-0123-3930-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <name></name>
+            <selectedRelationships>success</selectedRelationships>
+            <source>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>7b9158f2-7b0f-399e-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>ccdfc0e7-4b9a-360f-0000-000000000000</id>
+            <parentGroupId>be898f61-6de5-37e4-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>3d6f19c7-dd31-398e-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <name></name>
+            <selectedRelationships>matched</selectedRelationships>
+            <source>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>4b6221fc-a4d8-37e8-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>e790d8fc-e572-343e-0000-000000000000</id>
+            <parentGroupId>be898f61-6de5-37e4-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>4b6221fc-a4d8-37e8-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <name></name>
+            <selectedRelationships>success</selectedRelationships>
+            <source>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>ec39e10a-b318-39d9-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>ec840d5a-8334-34c3-0000-000000000000</id>
+            <parentGroupId>be898f61-6de5-37e4-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>ec39e10a-b318-39d9-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <name></name>
+            <selectedRelationships>deu</selectedRelationships>
+            <source>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>117d7f15-de85-3722-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>03414a5e-021a-3e25-0000-000000000000</id>
+            <parentGroupId>be898f61-6de5-37e4-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>247227b4-57af-3ccd-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <name></name>
+            <selectedRelationships>splits</selectedRelationships>
+            <source>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>71416e21-0123-3930-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>1769e36d-ec4c-35bf-0000-000000000000</id>
+            <parentGroupId>be898f61-6de5-37e4-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>adaf3db7-e76e-32c2-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <name></name>
+            <selectedRelationships>eng</selectedRelationships>
+            <source>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>117d7f15-de85-3722-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>31e0d7b8-f503-3d2a-0000-000000000000</id>
+            <parentGroupId>be898f61-6de5-37e4-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>c6032456-ce3d-381e-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <name></name>
+            <selectedRelationships>eng</selectedRelationships>
+            <source>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>3d6f19c7-dd31-398e-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>3e2dc876-32ef-317f-0000-000000000000</id>
+            <parentGroupId>be898f61-6de5-37e4-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>c6032456-ce3d-381e-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <name></name>
+            <selectedRelationships>success</selectedRelationships>
+            <source>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>687e92c8-b45f-3e62-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>548c83db-48a4-3117-0000-000000000000</id>
+            <parentGroupId>be898f61-6de5-37e4-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>117d7f15-de85-3722-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <name></name>
+            <selectedRelationships>success</selectedRelationships>
+            <source>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>247227b4-57af-3ccd-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>77a5c5d8-1951-3c51-0000-000000000000</id>
+            <parentGroupId>be898f61-6de5-37e4-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>4b6221fc-a4d8-37e8-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <name></name>
+            <selectedRelationships>success</selectedRelationships>
+            <source>
+                <groupId>be898f61-6de5-37e4-0000-000000000000</groupId>
+                <id>adaf3db7-e76e-32c2-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <processors>
+            <id>adaf3db7-e76e-32c2-0000-000000000000</id>
+            <parentGroupId>be898f61-6de5-37e4-0000-000000000000</parentGroupId>
+            <position>
+                <x>168.7637613234309</x>
+                <y>433.3117775266096</y>
+            </position>
+            <bundle>
+                <artifact>nifi-elasticsearch-nar</artifact>
+                <group>org.apache.nifi</group>
+                <version>1.5.0</version>
+            </bundle>
+            <config>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <descriptors>
+                    <entry>
+                        <key>elasticsearch-http-response-timeout</key>
+                        <value>
+                            <name>elasticsearch-http-response-timeout</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>query-es-index</key>
+                        <value>
+                            <name>query-es-index</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>query-es-limit</key>
+                        <value>
+                            <name>query-es-limit</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>query-es-target</key>
+                        <value>
+                            <name>query-es-target</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>elasticsearch-http-url</key>
+                        <value>
+                            <name>elasticsearch-http-url</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>SSL Context Service</key>
+                        <value>
+                            <identifiesControllerService>org.apache.nifi.ssl.SSLContextService</identifiesControllerService>
+                            <name>SSL Context Service</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>elasticsearch-http-connect-timeout</key>
+                        <value>
+                            <name>elasticsearch-http-connect-timeout</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>query-es-type</key>
+                        <value>
+                            <name>query-es-type</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Username</key>
+                        <value>
+                            <name>Username</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>query-es-fields</key>
+                        <value>
+                            <name>query-es-fields</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>query-es-sort</key>
+                        <value>
+                            <name>query-es-sort</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>query-es-query</key>
+                        <value>
+                            <name>query-es-query</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>query-es-size</key>
+                        <value>
+                            <name>query-es-size</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Password</key>
+                        <value>
+                            <name>Password</name>
+                        </value>
+                    </entry>
+                </descriptors>
+                <executionNode>ALL</executionNode>
+                <lossTolerant>false</lossTolerant>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>elasticsearch-http-response-timeout</key>
+                        <value>15 secs</value>
+                    </entry>
+                    <entry>
+                        <key>query-es-index</key>
+                        <value>enwiki</value>
+                    </entry>
+                    <entry>
+                        <key>query-es-limit</key>
+                        <value>1</value>
+                    </entry>
+                    <entry>
+                        <key>query-es-target</key>
+                        <value>Flow file content</value>
+                    </entry>
+                    <entry>
+                        <key>elasticsearch-http-url</key>
+                        <value>http://localhost:9200</value>
+                    </entry>
+                    <entry>
+                        <key>SSL Context Service</key>
+                    </entry>
+                    <entry>
+                        <key>elasticsearch-http-connect-timeout</key>
+                        <value>5 secs</value>
+                    </entry>
+                    <entry>
+                        <key>query-es-type</key>
+                    </entry>
+                    <entry>
+                        <key>Username</key>
+                    </entry>
+                    <entry>
+                        <key>query-es-fields</key>
+                    </entry>
+                    <entry>
+                        <key>query-es-sort</key>
+                    </entry>
+                    <entry>
+                        <key>query-es-query</key>
+                        <value>birthday</value>
+                    </entry>
+                    <entry>
+                        <key>query-es-size</key>
+                        <value>10</value>
+                    </entry>
+                    <entry>
+                        <key>Password</key>
+                    </entry>
+                </properties>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <name>QueryElasticsearchHttp</name>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>failure</name>
+            </relationships>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>retry</name>
+            </relationships>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>success</name>
+            </relationships>
+            <state>RUNNING</state>
+            <style/>
+            <type>org.apache.nifi.processors.elasticsearch.QueryElasticsearchHttp</type>
+        </processors>
+        <processors>
+            <id>c6032456-ce3d-381e-0000-000000000000</id>
+            <parentGroupId>be898f61-6de5-37e4-0000-000000000000</parentGroupId>
+            <position>
+                <x>576.31843691467</x>
+                <y>869.291760515099</y>
+            </position>
+            <bundle>
+                <artifact>nifi-standard-nar</artifact>
+                <group>org.apache.nifi</group>
+                <version>1.5.0</version>
+            </bundle>
+            <config>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <descriptors>
+                    <entry>
+                        <key>Log prefix</key>
+                        <value>
+                            <name>Log prefix</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>character-set</key>
+                        <value>
+                            <name>character-set</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Log Level</key>
+                        <value>
+                            <name>Log Level</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>attributes-to-ignore-regex</key>
+                        <value>
+                            <name>attributes-to-ignore-regex</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Attributes to Ignore</key>
+                        <value>
+                            <name>Attributes to Ignore</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Attributes to Log</key>
+                        <value>
+                            <name>Attributes to Log</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>attributes-to-log-regex</key>
+                        <value>
+                            <name>attributes-to-log-regex</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Log Payload</key>
+                        <value>
+                            <name>Log Payload</name>
+                        </value>
+                    </entry>
+                </descriptors>
+                <executionNode>ALL</executionNode>
+                <lossTolerant>false</lossTolerant>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>Log prefix</key>
+                    </entry>
+                    <entry>
+                        <key>character-set</key>
+                        <value>UTF-8</value>
+                    </entry>
+                    <entry>
+                        <key>Log Level</key>
+                        <value>info</value>
+                    </entry>
+                    <entry>
+                        <key>attributes-to-ignore-regex</key>
+                    </entry>
+                    <entry>
+                        <key>Attributes to Ignore</key>
+                    </entry>
+                    <entry>
+                        <key>Attributes to Log</key>
+                    </entry>
+                    <entry>
+                        <key>attributes-to-log-regex</key>
+                        <value>.*</value>
+                    </entry>
+                    <entry>
+                        <key>Log Payload</key>
+                        <value>true</value>
+                    </entry>
+                </properties>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <name>LogAttribute</name>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>success</name>
+            </relationships>
+            <state>RUNNING</state>
+            <style/>
+            <type>org.apache.nifi.processors.standard.LogAttribute</type>
+        </processors>
+        <processors>
+            <id>ec39e10a-b318-39d9-0000-000000000000</id>
+            <parentGroupId>be898f61-6de5-37e4-0000-000000000000</parentGroupId>
+            <position>
+                <x>1036.6011499995677</x>
+                <y>417.62220925018846</y>
+            </position>
+            <bundle>
+                <artifact>nifi-elasticsearch-nar</artifact>
+                <group>org.apache.nifi</group>
+                <version>1.5.0</version>
+            </bundle>
+            <config>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <descriptors>
+                    <entry>
+                        <key>elasticsearch-http-response-timeout</key>
+                        <value>
+                            <name>elasticsearch-http-response-timeout</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>query-es-index</key>
+                        <value>
+                            <name>query-es-index</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>query-es-limit</key>
+                        <value>
+                            <name>query-es-limit</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>query-es-target</key>
+                        <value>
+                            <name>query-es-target</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>elasticsearch-http-url</key>
+                        <value>
+                            <name>elasticsearch-http-url</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>SSL Context Service</key>
+                        <value>
+                            <identifiesControllerService>org.apache.nifi.ssl.SSLContextService</identifiesControllerService>
+                            <name>SSL Context Service</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>elasticsearch-http-connect-timeout</key>
+                        <value>
+                            <name>elasticsearch-http-connect-timeout</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>query-es-type</key>
+                        <value>
+                            <name>query-es-type</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Username</key>
+                        <value>
+                            <name>Username</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>query-es-fields</key>
+                        <value>
+                            <name>query-es-fields</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>query-es-sort</key>
+                        <value>
+                            <name>query-es-sort</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>query-es-query</key>
+                        <value>
+                            <name>query-es-query</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>query-es-size</key>
+                        <value>
+                            <name>query-es-size</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Password</key>
+                        <value>
+                            <name>Password</name>
+                        </value>
+                    </entry>
+                </descriptors>
+                <executionNode>ALL</executionNode>
+                <lossTolerant>false</lossTolerant>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>elasticsearch-http-response-timeout</key>
+                        <value>15 secs</value>
+                    </entry>
+                    <entry>
+                        <key>query-es-index</key>
+                        <value>dewiki</value>
+                    </entry>
+                    <entry>
+                        <key>query-es-limit</key>
+                        <value>1</value>
+                    </entry>
+                    <entry>
+                        <key>query-es-target</key>
+                        <value>Flow file content</value>
+                    </entry>
+                    <entry>
+                        <key>elasticsearch-http-url</key>
+                        <value>http://localhost:9200</value>
+                    </entry>
+                    <entry>
+                        <key>SSL Context Service</key>
+                    </entry>
+                    <entry>
+                        <key>elasticsearch-http-connect-timeout</key>
+                        <value>5 secs</value>
+                    </entry>
+                    <entry>
+                        <key>query-es-type</key>
+                    </entry>
+                    <entry>
+                        <key>Username</key>
+                    </entry>
+                    <entry>
+                        <key>query-es-fields</key>
+                    </entry>
+                    <entry>
+                        <key>query-es-sort</key>
+                    </entry>
+                    <entry>
+                        <key>query-es-query</key>
+                        <value>Geburtstag</value>
+                    </entry>
+                    <entry>
+                        <key>query-es-size</key>
+                        <value>10</value>
+                    </entry>
+                    <entry>
+                        <key>Password</key>
+                    </entry>
+                </properties>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <name>QueryElasticsearchHttp</name>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>failure</name>
+            </relationships>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>retry</name>
+            </relationships>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>success</name>
+            </relationships>
+            <state>RUNNING</state>
+            <style/>
+            <type>org.apache.nifi.processors.elasticsearch.QueryElasticsearchHttp</type>
+        </processors>
+        <processors>
+            <id>117d7f15-de85-3722-0000-000000000000</id>
+            <parentGroupId>be898f61-6de5-37e4-0000-000000000000</parentGroupId>
+            <position>
+                <x>579.3652038574219</x>
+                <y>202.38190174102783</y>
+            </position>
+            <bundle>
+                <artifact>nifi-standard-nar</artifact>
+                <group>org.apache.nifi</group>
+                <version>1.5.0</version>
+            </bundle>
+            <config>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <descriptors>
+                    <entry>
+                        <key>Routing Strategy</key>
+                        <value>
+                            <name>Routing Strategy</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>deu</key>
+                        <value>
+                            <name>deu</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>eng</key>
+                        <value>
+                            <name>eng</name>
+                        </value>
+                    </entry>
+                </descriptors>
+                <executionNode>ALL</executionNode>
+                <lossTolerant>false</lossTolerant>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>Routing Strategy</key>
+                        <value>Route to Property name</value>
+                    </entry>
+                    <entry>
+                        <key>deu</key>
+                        <value>${language:equalsIgnoreCase('deu')}</value>
+                    </entry>
+                    <entry>
+                        <key>eng</key>
+                        <value>${language:equalsIgnoreCase('eng')}</value>
+                    </entry>
+                </properties>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <name>RouteOnAttribute</name>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>deu</name>
+            </relationships>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>eng</name>
+            </relationships>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>unmatched</name>
+            </relationships>
+            <state>RUNNING</state>
+            <style/>
+            <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
+        </processors>
+        <processors>
+            <id>247227b4-57af-3ccd-0000-000000000000</id>
+            <parentGroupId>be898f61-6de5-37e4-0000-000000000000</parentGroupId>
+            <position>
+                <x>1198.1999206542969</x>
+                <y>0.0</y>
+            </position>
+            <bundle>
+                <artifact>nifi-processors-nar</artifact>
+                <group>haystack18</group>
+                <version>0.1-SNAPSHOT</version>
+            </bundle>
+            <config>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <descriptors/>
+                <executionNode>ALL</executionNode>
+                <lossTolerant>false</lossTolerant>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties/>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <name>LangDetect</name>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>failure</name>
+            </relationships>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>success</name>
+            </relationships>
+            <state>RUNNING</state>
+            <style/>
+            <type>com.mtnfog.LangDetect</type>
+        </processors>
+        <processors>
+            <id>3d6f19c7-dd31-398e-0000-000000000000</id>
+            <parentGroupId>be898f61-6de5-37e4-0000-000000000000</parentGroupId>
+            <position>
+                <x>1241.88306242006</x>
+                <y>652.5513552657271</y>
+            </position>
+            <bundle>
+                <artifact>nifi-standard-nar</artifact>
+                <group>org.apache.nifi</group>
+                <version>1.5.0</version>
+            </bundle>
+            <config>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <descriptors>
+                    <entry>
+                        <key>Routing Strategy</key>
+                        <value>
+                            <name>Routing Strategy</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>deu</key>
+                        <value>
+                            <name>deu</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>eng</key>
+                        <value>
+                            <name>eng</name>
+                        </value>
+                    </entry>
+                </descriptors>
+                <executionNode>ALL</executionNode>
+                <lossTolerant>false</lossTolerant>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>Routing Strategy</key>
+                        <value>Route to Property name</value>
+                    </entry>
+                    <entry>
+                        <key>deu</key>
+                        <value>${language:equalsIgnoreCase('deu')}</value>
+                    </entry>
+                    <entry>
+                        <key>eng</key>
+                        <value>${language:equalsIgnoreCase('eng')}</value>
+                    </entry>
+                </properties>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <name>RouteOnAttribute</name>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>deu</name>
+            </relationships>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>eng</name>
+            </relationships>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>unmatched</name>
+            </relationships>
+            <state>RUNNING</state>
+            <style/>
+            <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
+        </processors>
+        <processors>
+            <id>4b6221fc-a4d8-37e8-0000-000000000000</id>
+            <parentGroupId>be898f61-6de5-37e4-0000-000000000000</parentGroupId>
+            <position>
+                <x>616.5435628435253</x>
+                <y>658.1003521286281</y>
+            </position>
+            <bundle>
+                <artifact>nifi-standard-nar</artifact>
+                <group>org.apache.nifi</group>
+                <version>1.5.0</version>
+            </bundle>
+            <config>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <descriptors>
+                    <entry>
+                        <key>result</key>
+                        <value>
+                            <name>result</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Destination</key>
+                        <value>
+                            <name>Destination</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Return Type</key>
+                        <value>
+                            <name>Return Type</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Null Value Representation</key>
+                        <value>
+                            <name>Null Value Representation</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Path Not Found Behavior</key>
+                        <value>
+                            <name>Path Not Found Behavior</name>
+                        </value>
+                    </entry>
+                </descriptors>
+                <executionNode>ALL</executionNode>
+                <lossTolerant>false</lossTolerant>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>result</key>
+                        <value>$.text</value>
+                    </entry>
+                    <entry>
+                        <key>Destination</key>
+                        <value>flowfile-content</value>
+                    </entry>
+                    <entry>
+                        <key>Return Type</key>
+                        <value>scalar</value>
+                    </entry>
+                    <entry>
+                        <key>Null Value Representation</key>
+                        <value>empty string</value>
+                    </entry>
+                    <entry>
+                        <key>Path Not Found Behavior</key>
+                        <value>ignore</value>
+                    </entry>
+                </properties>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <name>EvaluateJsonPath</name>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>failure</name>
+            </relationships>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>matched</name>
+            </relationships>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>unmatched</name>
+            </relationships>
+            <state>RUNNING</state>
+            <style/>
+            <type>org.apache.nifi.processors.standard.EvaluateJsonPath</type>
+        </processors>
+        <processors>
+            <id>687e92c8-b45f-3e62-0000-000000000000</id>
+            <parentGroupId>be898f61-6de5-37e4-0000-000000000000</parentGroupId>
+            <position>
+                <x>1211.8923344876634</x>
+                <y>870.1532188870203</y>
+            </position>
+            <bundle>
+                <artifact>nifi-processors-nar</artifact>
+                <group>haystack18</group>
+                <version>0.1-SNAPSHOT</version>
+            </bundle>
+            <config>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <descriptors>
+                    <entry>
+                        <key>Apache Joshua Path</key>
+                        <value>
+                            <name>Apache Joshua Path</name>
+                        </value>
+                    </entry>
+                </descriptors>
+                <executionNode>ALL</executionNode>
+                <lossTolerant>false</lossTolerant>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>Apache Joshua Path</key>
+                        <value>/opt/apache-joshua-de-en-2016-11-18</value>
+                    </entry>
+                </properties>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <name>LangTranslate-de-en</name>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>failure</name>
+            </relationships>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>success</name>
+            </relationships>
+            <state>RUNNING</state>
+            <style/>
+            <type>com.mtnfog.LangTranslate</type>
+        </processors>
+        <processors>
+            <id>71416e21-0123-3930-0000-000000000000</id>
+            <parentGroupId>be898f61-6de5-37e4-0000-000000000000</parentGroupId>
+            <position>
+                <x>582.6702421376283</x>
+                <y>12.854889400355887</y>
+            </position>
+            <bundle>
+                <artifact>nifi-standard-nar</artifact>
+                <group>org.apache.nifi</group>
+                <version>1.5.0</version>
+            </bundle>
+            <config>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <descriptors>
+                    <entry>
+                        <key>Remove Trailing Newlines</key>
+                        <value>
+                            <name>Remove Trailing Newlines</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Maximum Fragment Size</key>
+                        <value>
+                            <name>Maximum Fragment Size</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Header Line Marker Characters</key>
+                        <value>
+                            <name>Header Line Marker Characters</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Header Line Count</key>
+                        <value>
+                            <name>Header Line Count</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Line Split Count</key>
+                        <value>
+                            <name>Line Split Count</name>
+                        </value>
+                    </entry>
+                </descriptors>
+                <executionNode>ALL</executionNode>
+                <lossTolerant>false</lossTolerant>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>Remove Trailing Newlines</key>
+                        <value>true</value>
+                    </entry>
+                    <entry>
+                        <key>Maximum Fragment Size</key>
+                    </entry>
+                    <entry>
+                        <key>Header Line Marker Characters</key>
+                    </entry>
+                    <entry>
+                        <key>Header Line Count</key>
+                        <value>0</value>
+                    </entry>
+                    <entry>
+                        <key>Line Split Count</key>
+                        <value>1</value>
+                    </entry>
+                </properties>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <name>SplitText</name>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>failure</name>
+            </relationships>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>original</name>
+            </relationships>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>splits</name>
+            </relationships>
+            <state>RUNNING</state>
+            <style/>
+            <type>org.apache.nifi.processors.standard.SplitText</type>
+        </processors>
+        <processors>
+            <id>7b9158f2-7b0f-399e-0000-000000000000</id>
+            <parentGroupId>be898f61-6de5-37e4-0000-000000000000</parentGroupId>
+            <position>
+                <x>0.0</x>
+                <y>3.224339485168457</y>
+            </position>
+            <bundle>
+                <artifact>nifi-standard-nar</artifact>
+                <group>org.apache.nifi</group>
+                <version>1.5.0</version>
+            </bundle>
+            <config>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <descriptors>
+                    <entry>
+                        <key>Keep Source File</key>
+                        <value>
+                            <name>Keep Source File</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Minimum File Age</key>
+                        <value>
+                            <name>Minimum File Age</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Polling Interval</key>
+                        <value>
+                            <name>Polling Interval</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Input Directory</key>
+                        <value>
+                            <name>Input Directory</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Maximum File Age</key>
+                        <value>
+                            <name>Maximum File Age</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Batch Size</key>
+                        <value>
+                            <name>Batch Size</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Maximum File Size</key>
+                        <value>
+                            <name>Maximum File Size</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Minimum File Size</key>
+                        <value>
+                            <name>Minimum File Size</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Ignore Hidden Files</key>
+                        <value>
+                            <name>Ignore Hidden Files</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Recurse Subdirectories</key>
+                        <value>
+                            <name>Recurse Subdirectories</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>File Filter</key>
+                        <value>
+                            <name>File Filter</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Path Filter</key>
+                        <value>
+                            <name>Path Filter</name>
+                        </value>
+                    </entry>
+                </descriptors>
+                <executionNode>ALL</executionNode>
+                <lossTolerant>false</lossTolerant>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>Keep Source File</key>
+                        <value>false</value>
+                    </entry>
+                    <entry>
+                        <key>Minimum File Age</key>
+                        <value>0 sec</value>
+                    </entry>
+                    <entry>
+                        <key>Polling Interval</key>
+                        <value>0 sec</value>
+                    </entry>
+                    <entry>
+                        <key>Input Directory</key>
+                        <value>/opt/input</value>
+                    </entry>
+                    <entry>
+                        <key>Maximum File Age</key>
+                    </entry>
+                    <entry>
+                        <key>Batch Size</key>
+                        <value>10</value>
+                    </entry>
+                    <entry>
+                        <key>Maximum File Size</key>
+                    </entry>
+                    <entry>
+                        <key>Minimum File Size</key>
+                        <value>0 B</value>
+                    </entry>
+                    <entry>
+                        <key>Ignore Hidden Files</key>
+                        <value>true</value>
+                    </entry>
+                    <entry>
+                        <key>Recurse Subdirectories</key>
+                        <value>true</value>
+                    </entry>
+                    <entry>
+                        <key>File Filter</key>
+                        <value>[^\.].*</value>
+                    </entry>
+                    <entry>
+                        <key>Path Filter</key>
+                    </entry>
+                </properties>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <name>GetFile</name>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>success</name>
+            </relationships>
+            <state>RUNNING</state>
+            <style/>
+            <type>org.apache.nifi.processors.standard.GetFile</type>
+        </processors>
+    </snippet>
+    <timestamp>04/02/2018 23:39:35 UTC</timestamp>
+</template>
