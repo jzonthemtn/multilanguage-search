@@ -50,8 +50,6 @@ import org.apache.nifi.processor.Relationship;
 import org.apache.nifi.processor.exception.ProcessException;
 import org.apache.nifi.processor.util.StandardValidators;
 
-import com.google.gson.Gson;
-
 @Tags({ "joshua, nlp, translate" })
 @CapabilityDescription("Performs language translation using Apache Joshua.")
 @SeeAlso()
@@ -72,18 +70,14 @@ public class LangTranslate extends AbstractProcessor {
 	private Decoder deDecoder;
 	private int counter = 0;
 
-	private Gson gson;
-
 	private static final PropertyDescriptor APACHE_JOSHUA_PATH = new PropertyDescriptor.Builder()
 	        .name("Apache Joshua Path")
 	        .required(true)
 	        .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
-	        .defaultValue("/opt/apache-joshua-en-de-2017-01-31")
 	        .build();
 	
 	private final AtomicReference<String> processorName = new AtomicReference<>(null);
 	private final AtomicReference<String> originalQuery = new AtomicReference<>(null);
-	private final AtomicReference<String> translations = new AtomicReference<>(null);
 	
 	@Override
 	protected void init(final ProcessorInitializationContext context) {
@@ -96,8 +90,6 @@ public class LangTranslate extends AbstractProcessor {
 		List<PropertyDescriptor> properties = new ArrayList<>();
 	    properties.add(APACHE_JOSHUA_PATH);
 	    descriptors = Collections.unmodifiableList(properties);
-
-		gson = new Gson();
 		
 	}
 	
@@ -155,17 +147,6 @@ public class LangTranslate extends AbstractProcessor {
 
                 Sentence sentence = new Sentence(input, counter++, deDecoder.getJoshuaConfiguration());
                 Translation translation = deDecoder.decode(sentence);
-                /*List<StructuredTranslation> structuredTranslations = translation.getStructuredTranslations();
-
-                List<String> t = new LinkedList<>();
-                //t.add(input);
-
-                for (StructuredTranslation st : structuredTranslations) {
-                    t.add(st.getTranslationString());
-                }
-
-                final String json = gson.toJson(t);
-                translations.set(json);*/
 
                 List<StructuredTranslation> translations = translation.getStructuredTranslations();
                 String t = translations.get(0).getFormattedTranslationString()
@@ -174,9 +155,6 @@ public class LangTranslate extends AbstractProcessor {
                 IOUtils.write(t, outputStream, StandardCharsets.UTF_8);
 
             });
-			
-			//session.putAttribute(flowFile, "original-query", processorName.get() + "-" + originalQuery.get());
-			//session.putAttribute(flowFile, "translations", processorName.get() + "-" + translations.get());
 
 			session.transfer(flowFile, REL_SUCCESS);
 
