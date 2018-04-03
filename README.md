@@ -1,5 +1,7 @@
 # Multi-Language Search
 
+[![Build Status](https://travis-ci.org/jzonthemtn/multilanguage-search.svg?branch=master)](https://travis-ci.org/jzonthemtn/multilanguage-search)
+
 This project demonstrates how multilanguage-search can be accomplished using Apache NiFi and Apache OpenNLP.
 
 This project has the ability to create a Lucene index from a Wikipedia dump that can be queried through a custom `QueryParser` that uses [Apache Joshua](https://cwiki.apache.org/confluence/display/JOSHUA/Apache+Joshua+%28Incubating%29+Home) to translate the search term to the language of the index. The project can be executed from the command line or in a NiFi pipline via the included NiFi processors.

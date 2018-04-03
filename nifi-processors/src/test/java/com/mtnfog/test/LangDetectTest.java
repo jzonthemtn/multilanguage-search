@@ -21,7 +21,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import org.apache.commons.io.IOUtils;
 import org.apache.nifi.util.MockFlowFile;
 import org.apache.nifi.util.TestRunner;
 import org.apache.nifi.util.TestRunners;
@@ -52,11 +51,28 @@ public class LangDetectTest {
         assertTrue("1 match", results.size() == 1);
         MockFlowFile result = results.get(0);
 
-        final String language = IOUtils.toString(runner.getContentAsByteArray(result), "UTF-8");
-        
-        System.out.println(language);
-        
+        String language = result.getAttribute("language");
+                
         assertEquals("eng", language);
+        
+    }
+    
+    @Test
+    public void detectGerman() throws IOException {
+
+        InputStream content = new ByteArrayInputStream("alles Gute zum Geburtstag".getBytes());
+        
+        runner.enqueue(content);
+        runner.run(1);
+        runner.assertQueueEmpty();
+        
+        List<MockFlowFile> results = runner.getFlowFilesForRelationship(LangDetect.REL_SUCCESS);
+        assertTrue("1 match", results.size() == 1);
+        MockFlowFile result = results.get(0);
+
+        String language = result.getAttribute("language");
+                
+        assertEquals("deu", language);
         
     }
  
