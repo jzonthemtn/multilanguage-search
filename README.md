@@ -6,9 +6,9 @@ This project demonstrates how multilanguage-search can be accomplished using Apa
 
 This project has the ability to create a Lucene index from a Wikipedia dump that can be queried through a custom `QueryParser` that uses [Apache Joshua](https://cwiki.apache.org/confluence/display/JOSHUA/Apache+Joshua+%28Incubating%29+Home) to translate the search term to the language of the index. The project can be executed from the command line or in a NiFi pipline via the included NiFi processors.
 
-For better performance and more real-world applicability, the NiFi flow created from this project uses an Elasticsearch index of a subnet of the Wikipedia dumps instead of the generated Lucene index.
+For better performance and more real-world applicability, the NiFi flow created from this project uses an Elasticsearch index of a subnet of the Wikipedia dumps instead of the generated Lucene index. It also utilizes Apache Joshua's REST interface to perform language translation. Both Elasticsearch and Apache Joshua's HTTP server need to be running in order for the flow to execute successfully.
 
-The OpenNLP langdetect model is included in `git lfs`.
+The OpenNLP langdetect model required during compilation is included in `git lfs`.
 
 ### Apache NiFi Flow
 
@@ -25,12 +25,11 @@ To run the multi-language search in a NiFi dataflow:
 # cp nifi-processors-nar/target/multilanguage-search-nifi.nar /opt/nifi/lib/
 ```
 
-Modify NiFI's `bootstrap.conf` to increase the `Xmx` parameter to `8g`. This is required to load the Apache Joshua model(s).
-
 Now start NiFi and create your dataflow. The NiFi custom processors in this project are:
 
 * `langdetect-processor` - This processor uses [OpenNLP](https://opennlp.apache.org/)'s language detection capability to identify the language of the input text.
-* `langtranslate-processor` - This processor uses Apache Joshua to translate the text. Note that this processor calls Joshua directly. An improvement would be to use Joshu'a built-in REST endpoint.
+* `langtranslate-processor` - This processor uses Apache Joshua to translate the text. Note that this processor calls Joshua directly and requires loading the Apache Joshua Language Pack in NiFi's memory. If you use this processor you will likely need to increase NiFi's memory in the `bootstrap.conf`.
+* `langtranslaterest-processor` - This processor uses Apache Joshua's REST interface to translate the text.
 * `wikipedia-index-search` - This processor facilitates querying a Lucene index of Wikipedia. (This processor is not used in the example flow in favor of an external Elasticsearch index.)
 
 ## Credits
