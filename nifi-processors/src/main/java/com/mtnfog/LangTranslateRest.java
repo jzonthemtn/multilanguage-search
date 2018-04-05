@@ -15,6 +15,7 @@
  */
 package com.mtnfog;
 
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -129,10 +130,11 @@ public class LangTranslateRest extends AbstractProcessor {
 			flowFile = session.write(flowFile, (inputStream, outputStream) -> {								
 
                 final String input = IOUtils.toString(inputStream, Charset.forName("UTF-8"));                                
-
+                final String encoded = URLEncoder.encode(input, StandardCharsets.UTF_8.toString());
+                
                 originalQuery.set(input);
                 
-                Call<JoshuaResponse> response = service.translate("list_weights", input);
+                Call<JoshuaResponse> response = service.translate("list_weights", encoded);
                 String translation = response.execute().body().getData().getTranslations().get(0).getTranslatedText();
 
                 IOUtils.write(translation, outputStream, StandardCharsets.UTF_8);
@@ -143,7 +145,7 @@ public class LangTranslateRest extends AbstractProcessor {
 
 		} catch (Exception ex) {
 			
-			getLogger().error(String.format("Unable to detect language. Exception: %s", ex.getMessage()), ex);
+			getLogger().error(String.format("Unable to translate language. Exception: %s", ex.getMessage()), ex);
 			session.transfer(flowFile, REL_FAILURE);
 			
 		}

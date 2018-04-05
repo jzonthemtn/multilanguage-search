@@ -160,7 +160,7 @@ public class LangTranslate extends AbstractProcessor {
 
 		} catch (Exception ex) {
 			
-			getLogger().error(String.format("Unable to detect language. Exception: %s", ex.getMessage()), ex);
+			getLogger().error(String.format("Unable to translate language. Exception: %s", ex.getMessage()), ex);
 			session.transfer(flowFile, REL_FAILURE);
 			
 		}
