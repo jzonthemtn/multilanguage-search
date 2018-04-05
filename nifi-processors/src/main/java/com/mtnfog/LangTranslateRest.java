@@ -23,7 +23,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+
+import okhttp3.OkHttpClient;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.nifi.annotation.behavior.ReadsAttribute;
@@ -51,6 +54,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import com.mtnfog.model.JoshuaResponse;
 import com.mtnfog.rest.JoshuaService;
+import com.mtnfog.model.Translation;
 
 @Tags({ "joshua, nlp, translate" })
 @CapabilityDescription("Performs language translation using Apache Joshua via REST.")
@@ -96,9 +100,15 @@ public class LangTranslateRest extends AbstractProcessor {
 	
 	@OnScheduled
 	public void setup(ProcessContext context) {
+		
+		final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+        	.readTimeout(60, TimeUnit.SECONDS)
+        	.connectTimeout(60, TimeUnit.SECONDS)
+        	.build();
 
 		Retrofit retrofit = new Retrofit.Builder()
 	    	.baseUrl(context.getProperty(APACHE_JOSHUA_HOST).getValue())
+	    	.client(okHttpClient)
 	    	.addConverterFactory(GsonConverterFactory.create())
 	    	.build();
 
@@ -134,10 +144,16 @@ public class LangTranslateRest extends AbstractProcessor {
                 
                 originalQuery.set(input);
                 
-                Call<JoshuaResponse> response = service.translate("list_weights", encoded);
-                String translation = response.execute().body().getData().getTranslations().get(0).getTranslatedText();
+                Call<JoshuaResponse> response = service.translate(encoded);
+                List<Translation> translations = response.execute().body().getData().getTranslations();
+                
+                StringBuilder sb = new StringBuilder();
 
-                IOUtils.write(translation, outputStream, StandardCharsets.UTF_8);
+                for(Translation t : translations) {
+                	sb.append(t.getTranslatedText());
+                }
+                
+                IOUtils.write(sb.toString(), outputStream, StandardCharsets.UTF_8);
 
             });
 
