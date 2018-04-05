@@ -150,7 +150,7 @@ public class LangTranslateRest extends AbstractProcessor {
                 StringBuilder sb = new StringBuilder();
 
                 for(Translation t : translations) {
-                	sb.append(t.getTranslatedText());
+                	sb.append(t.getTranslatedText() + " (score " + t.getRawNbest().get(0).getTotalScore().toString() + ") ");
                 }
                 
                 IOUtils.write(sb.toString(), outputStream, StandardCharsets.UTF_8);
