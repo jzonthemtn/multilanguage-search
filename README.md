@@ -8,8 +8,6 @@ This project has the ability to create a Lucene index from a Wikipedia dump that
 
 For better performance and more real-world applicability, the NiFi flow created from this project uses an Elasticsearch index of a subnet of the Wikipedia dumps instead of the generated Lucene index. It also utilizes Apache Joshua's REST interface to perform language translation. Both Elasticsearch and Apache Joshua's HTTP server need to be running in order for the flow to execute successfully.
 
-The OpenNLP langdetect model required during compilation is included in `git lfs`.
-
 ### Apache NiFi Flow
 
 Here's an example flow using the processors in this repository. The flow reads files of search terms from the file system and follows an "English in, English out" approach.
