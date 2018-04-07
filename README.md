@@ -14,7 +14,7 @@ Here's an example flow using the processors in this repository. The flow reads f
 
 Each search term is translated to one of several languages. Each of these languages has a subset of Wikipedia indexed in a local Elasticsearch. The search results are returned and translated back to English.
 
-![Flow](https://raw.githubusercontent.com/jzonthemtn/multilanguage-search/master/example-nifi-flow.png)
+![Flow](https://raw.githubusercontent.com/jzonthemtn/multilanguage-search/master/flow.png)
 
 To run the multi-language search in a NiFi dataflow:
 
