@@ -16,4 +16,5 @@ com.mtnfog.LangDetect
 com.mtnfog.LangTranslate
 com.mtnfog.LangTranslateRest
 com.mtnfog.SentenceExtract
+com.mtnfog.WikiTextFilter
 com.mtnfog.WikipediaIndexSearch
