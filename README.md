@@ -16,23 +16,7 @@ Here's an example flow using the processors in this repository. The flow reads f
 
 ### Walkthrough of NiFi Flow
 
-1. The search terms are read from a file (`GetFile`). Each line of the file contains a search term in some language.
-1. The file is split into separate flowfiles per line (`SplitText`) in order to process each search term.
-1. An attribute is set (`UpdateAttribute`) on each flowfile that identifies the file that each search term came from.
-1. The language of each search term is determined (`LangDetect`) and set as a new `language` attribute on the flowfile. This processor uses [OpenNLP](https://opennlp.apache.org/)'s `langdetect` capability.
-1. The search term is made the content of the flowfile (`ExtractText`).
-1. The search term is used to query an Elasticsearch index (`QueryElasticsearchHttp`). The processor determines which index to search based on the `language` attribute. For example, if the language is `eng` then the processor queries an English index of Wikipedia. If the language is `deu` then the processor queries a German index of Wikipedia.
-1. Some WikiText syntax (headings, bulleted lists) is removed from the search results (`WikiTextFilter`).
-1. The flowfile is now routed based on the `language` attribute.
-
-For `eng`:
-1. If it is `eng` the flow continues to the last processor for output.
-
-For `deu`:
-1. If the language is `deu` it is routed to a sentence extraction processor (`SentenceExtract`). This processor splits the search result text into its individual sentences via [OpenNLP](https://opennlp.apache.org/) and a German sentence model. The sentences are returned as a JSON array.
-1. The JSON array of sentences is split into a flowfile per sentence (`SplitJson`).
-1. Each sentence is now sent to Apache Joshua for translation (`LangTranslateRest-de-en`). This processor utilizes Apache Joshua's REST interface.
-1. The resulting translations are combined together (`MergeContent`) to give the full translated search result.
+The flow reads files from the file system containing a list of search terms (one per line). These are expected to be English search terms. The English term and its translated German equivalent term is used to query an Elasticsearch index containing both English and German Wikipedia pages. The search result is extracted and parsed to remove some WikiText formatting. The language of the article is determined. If the language is English the search result is returned. If the language is German, the individual sentences in the article are extracted and German to English translation is performed on each sentence. The sentences are then reassembled in order and returned as the search result.
 
 ## Usage
 
