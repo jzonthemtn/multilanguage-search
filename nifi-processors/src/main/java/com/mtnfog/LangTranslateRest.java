@@ -80,6 +80,13 @@ public class LangTranslateRest extends AbstractProcessor {
 	        .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
 	        .build();
 	
+	private static final PropertyDescriptor INCLUDE_SCORE = new PropertyDescriptor.Builder()
+	    .name("Include Score")
+	    .required(true)
+	    .defaultValue("true")
+	    .addValidator(StandardValidators.BOOLEAN_VALIDATOR)
+	    .build();
+	
 	private final AtomicReference<String> originalQuery = new AtomicReference<>(null);
 	
 	private JoshuaService service;
@@ -144,13 +151,21 @@ public class LangTranslateRest extends AbstractProcessor {
                 
                 originalQuery.set(input);
                 
+                final boolean includeScore = ctx.getProperty(INCLUDE_SCORE).isSet();
+                
                 Call<JoshuaResponse> response = service.translate(encoded);
                 List<Translation> translations = response.execute().body().getData().getTranslations();
                 
                 StringBuilder sb = new StringBuilder();
 
                 for(Translation t : translations) {
-                	sb.append(t.getTranslatedText() + " (score " + t.getRawNbest().get(0).getTotalScore().toString() + ") ");
+                	
+                	if(includeScore) {
+                		sb.append(t.getTranslatedText() + " (score " + t.getRawNbest().get(0).getTotalScore().toString() + ") ");
+                	} else {
+                		sb.append(t.getTranslatedText());
+                	}
+                	
                 }
                 
                 IOUtils.write(sb.toString(), outputStream, StandardCharsets.UTF_8);
