@@ -74,16 +74,19 @@ public class LangTranslateRest extends AbstractProcessor {
 	private Set<Relationship> relationships;
 	
 	private static final PropertyDescriptor APACHE_JOSHUA_HOST = new PropertyDescriptor.Builder()
-	        .name("Apache Joshua Path Host")
+	        .description("Apache Joshua Path Host")
+	        .name("host")
 	        .required(true)
 	        .defaultValue("http://localhost:5674/")
 	        .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
 	        .build();
 	
 	private static final PropertyDescriptor INCLUDE_SCORE = new PropertyDescriptor.Builder()
-	    .name("Include Score")
+	    .description("Include Score")
+	    .name("score")
 	    .required(true)
-	    .defaultValue("true")
+	    .allowableValues("true", "false")
+	    .defaultValue("false")
 	    .addValidator(StandardValidators.BOOLEAN_VALIDATOR)
 	    .build();
 	
