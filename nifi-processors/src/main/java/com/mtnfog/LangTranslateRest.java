@@ -155,7 +155,7 @@ public class LangTranslateRest extends AbstractProcessor {
                 
                 originalQuery.set(input);
                 
-                final boolean includeScore = ctx.getProperty(INCLUDE_SCORE).isSet();
+                final boolean includeScore = ctx.getProperty(INCLUDE_SCORE).asBoolean().booleanValue();
                 
                 Call<JoshuaResponse> response = service.translate(encoded);
                 List<Translation> translations = response.execute().body().getData().getTranslations();
