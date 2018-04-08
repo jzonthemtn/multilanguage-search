@@ -101,6 +101,7 @@ public class LangTranslateRest extends AbstractProcessor {
 			
 		List<PropertyDescriptor> properties = new ArrayList<>();
 	    properties.add(APACHE_JOSHUA_HOST);
+	    properties.add(INCLUDE_SCORE);
 	    descriptors = Collections.unmodifiableList(properties);
 		
 	}
