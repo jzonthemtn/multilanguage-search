@@ -1,7 +1,5 @@
 # Multi-Language Search
 
-[![Build Status](https://travis-ci.org/jzonthemtn/multilanguage-search.svg?branch=master)](https://travis-ci.org/jzonthemtn/multilanguage-search)
-
 This project demonstrates how multilanguage-search can be accomplished using Apache NiFi and Apache OpenNLP.
 
 Please see one of the branches for more details.
