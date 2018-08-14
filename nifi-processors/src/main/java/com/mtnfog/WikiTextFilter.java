@@ -15,6 +15,8 @@
  */
 package com.mtnfog;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -23,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.nifi.annotation.behavior.ReadsAttribute;
 import org.apache.nifi.annotation.behavior.ReadsAttributes;
 import org.apache.nifi.annotation.behavior.SideEffectFree;
@@ -39,6 +42,13 @@ import org.apache.nifi.processor.ProcessSession;
 import org.apache.nifi.processor.ProcessorInitializationContext;
 import org.apache.nifi.processor.Relationship;
 import org.apache.nifi.processor.exception.ProcessException;
+import org.wikiclean.WikiClean;
+import org.wikiclean.WikiClean.WikiLanguage;
+
+import opennlp.tools.langdetect.Language;
+import opennlp.tools.langdetect.LanguageDetector;
+import opennlp.tools.langdetect.LanguageDetectorME;
+import opennlp.tools.langdetect.LanguageDetectorModel;
 
 @Tags({ "search, wikipedia, wikitext" })
 @CapabilityDescription("Removes WikiText formatting.")
@@ -57,6 +67,8 @@ public class WikiTextFilter extends AbstractProcessor {
 	private List<PropertyDescriptor> descriptors;
 	private Set<Relationship> relationships;
 		
+	private LanguageDetector languageDetector;
+	
 	@Override
 	protected void init(final ProcessorInitializationContext context) {
 
@@ -64,6 +76,20 @@ public class WikiTextFilter extends AbstractProcessor {
 		relationships.add(REL_SUCCESS);
 		relationships.add(REL_FAILURE);
 		relationships = Collections.unmodifiableSet(relationships);
+		
+		try {
+			
+			final InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("langdetect-183.bin");
+			final LanguageDetectorModel m = new LanguageDetectorModel(resourceAsStream);
+			languageDetector = new LanguageDetectorME(m);
+			
+			resourceAsStream.close();
+
+		} catch (IOException ex) {
+
+			getLogger().error("Unable to initialize langdetect processor: " + ex.getMessage());
+
+		}
 		
 	}
 		
@@ -91,18 +117,35 @@ public class WikiTextFilter extends AbstractProcessor {
 			flowFile = session.write(flowFile, (inputStream, outputStream) -> {
 
                 final String input = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-
-                StringBuilder formatted = new StringBuilder();
-
-                String[] lines = input.split(System.getProperty("line.separator"));
                 
-                for(String line : lines) {
-                	if(!line.startsWith("=") && !line.startsWith("*")) {
-                		formatted.append(line);
-                	}
+                final Language[] languages = languageDetector.predictLanguages(input);
+                final String language = languages[0].getLang();
+
+                WikiClean cleaner = null;
+                
+                if(StringUtils.equalsIgnoreCase(language, "eng")) {
+                	
+                    cleaner =
+                    	    new WikiClean.Builder()
+                    	        .withLanguage(WikiLanguage.EN)
+                    	        .withTitle(false)
+                    	        .withFooter(false)
+                    	        .build();
+                	
+                } else if(StringUtils.equalsIgnoreCase(language, "eng")) {
+                	
+                    cleaner =
+                    	    new WikiClean.Builder()
+                    	        .withLanguage(WikiLanguage.DE)
+                    	        .withTitle(false)
+                    	        .withFooter(false)
+                    	        .build();
+                    
                 }
                 
-                IOUtils.write(formatted.toString(), outputStream, Charset.forName("UTF-8"));
+                final String content = cleaner.clean(input);
+                
+                IOUtils.write(content, outputStream, Charset.forName("UTF-8"));
 
             });
 
@@ -110,7 +153,7 @@ public class WikiTextFilter extends AbstractProcessor {
 
 		} catch (Exception ex) {
 			
-			getLogger().error(String.format("Unable to detect language. Exception: %s", ex.getMessage()), ex);
+			getLogger().error(String.format("Unable to filter Wikipedia text. Exception: %s", ex.getMessage()), ex);
 			session.transfer(flowFile, REL_FAILURE);
 			
 		}
