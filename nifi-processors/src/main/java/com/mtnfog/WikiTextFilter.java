@@ -96,15 +96,26 @@ public class WikiTextFilter extends AbstractProcessor {
 
                 final String input = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
                 
+                String[] lines = input.split(System.getProperty("line.separator"));
+                
+                StringBuilder formatted = new StringBuilder();
+                
+                for(String line : lines) {
+                	if(!line.startsWith("=") && !line.startsWith("*")) {
+                		formatted.append(line);
+                	}
+                }            
+                
                 WikiClean cleaner =
                 	    new WikiClean.Builder()
                 	        .withLanguage(WikiLanguage.EN)
                 	        .withTitle(false)
                 	        .withFooter(false).build();
-                	String content = cleaner.clean(input);                
+                	String content = cleaner.clean(formatted.toString());                
                 
                 content = content.replaceAll("Primary sources", "");
                 content = content.replaceAll("Secondary sources", "");
+                content = content.replaceAll("\\(.*\\)", "");
                // content = content.replaceAll("[^\\x00-\\x7F]", "");
                 	
                 IOUtils.write(content.toString(), outputStream, Charset.forName("UTF-8"));

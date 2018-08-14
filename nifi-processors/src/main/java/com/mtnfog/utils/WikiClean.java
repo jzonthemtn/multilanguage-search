@@ -115,9 +115,6 @@ public class WikiClean {
     return (start == -1 || end == -1 || start > end) ? "0" : s.substring(start + 4, end);
   }
 
-  private static final String XML_START_TAG_TEXT = "<docs>";
-  private static final String XML_END_TAG_TEXT = "</docs>";
-
   /**
    * Cleans a Wikipedia article.
    * @param page Wikipedia article
