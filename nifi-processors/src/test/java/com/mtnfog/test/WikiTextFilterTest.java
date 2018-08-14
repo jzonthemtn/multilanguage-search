@@ -20,6 +20,7 @@ import static org.junit.Assert.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -44,7 +45,10 @@ public class WikiTextFilterTest {
     @Test
     public void filter() throws IOException {
 
-        InputStream content = new ByteArrayInputStream("===Fixed observances===\n*April 1\nGood text".getBytes());
+    	InputStream inputStream = getClass().getClassLoader().getResourceAsStream("page.xml");
+    	String text = IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
+    	
+        InputStream content = new ByteArrayInputStream(text.getBytes());
         
         runner.enqueue(content);
         runner.run(1);

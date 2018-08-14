@@ -72,9 +72,9 @@
 			<version>1.2.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.wikiclean</groupId>
-			<artifactId>wikiclean</artifactId>
-			<version>1.1</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.nifi</groupId>
