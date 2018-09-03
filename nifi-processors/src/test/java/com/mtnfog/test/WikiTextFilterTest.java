@@ -63,5 +63,27 @@ public class WikiTextFilterTest {
         System.out.println(output);
                 
     }
+    
+    @Test
+    public void filter2() throws IOException {
+
+    	InputStream inputStream = getClass().getClassLoader().getResourceAsStream("page2.xml");
+    	String text = IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
+    	
+        InputStream content = new ByteArrayInputStream(text.getBytes());
+        
+        runner.enqueue(content);
+        runner.run(1);
+        runner.assertQueueEmpty();
+        
+        List<MockFlowFile> results = runner.getFlowFilesForRelationship(LangTranslate.REL_SUCCESS);
+        assertTrue("1 match", results.size() == 1);
+        MockFlowFile result = results.get(0);
+
+        final String output = IOUtils.toString(runner.getContentAsByteArray(result), "UTF-8");
+        
+        System.out.println(output);
+                
+    }
  
 }
