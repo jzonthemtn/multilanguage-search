@@ -15,12 +15,14 @@
  */
 package com.mtnfog;
 
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.nifi.annotation.behavior.ReadsAttribute;
 import org.apache.nifi.annotation.behavior.ReadsAttributes;
@@ -41,12 +43,12 @@ import org.apache.nifi.processor.exception.ProcessException;
 import org.apache.nifi.processor.util.StandardValidators;
 
 @Tags({ "attribute, content" })
-@CapabilityDescription("Copies an attribute to the content.")
+@CapabilityDescription("Copies the content to an attribute.")
 @SeeAlso()
 @ReadsAttributes({ @ReadsAttribute(attribute = "") })
 @WritesAttributes({ @WritesAttribute(attribute = "") })
 @SideEffectFree
-public class AttributeToContent extends AbstractProcessor {
+public class ContentToAttribute extends AbstractProcessor {
 	
 	public static final Relationship REL_SUCCESS = new Relationship.Builder()
 			.name("success").description("success").build();
@@ -62,6 +64,8 @@ public class AttributeToContent extends AbstractProcessor {
 
 	private List<PropertyDescriptor> descriptors;
 	private Set<Relationship> relationships;
+	
+	private final AtomicReference<String> value = new AtomicReference<>(null);
 	
 	@Override
 	protected void init(final ProcessorInitializationContext context) {
@@ -98,13 +102,16 @@ public class AttributeToContent extends AbstractProcessor {
 
 		try {
 			
-			final String attributeValue = flowFile.getAttribute(ctx.getProperty(ATTRIBUTE).getValue());
-						
+			final String attribute = flowFile.getAttribute(ctx.getProperty(ATTRIBUTE).getValue());
+
 			flowFile = session.write(flowFile, (inputStream, outputStream) -> {
 				
-                IOUtils.write(attributeValue, outputStream, StandardCharsets.UTF_8);
-
+				final String input = IOUtils.toString(inputStream, Charset.forName("UTF-8"));
+				value.set(input);
+				
             });
+			
+			session.putAttribute(flowFile, attribute, value.get());
 
 			session.transfer(flowFile, REL_SUCCESS);
 			
