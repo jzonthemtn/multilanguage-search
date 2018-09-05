@@ -102,7 +102,7 @@ public class ContentToAttribute extends AbstractProcessor {
 
 		try {
 			
-			final String attribute = flowFile.getAttribute(ctx.getProperty(ATTRIBUTE).getValue());
+			final String attribute = ctx.getProperty(ATTRIBUTE).getValue();
 
 			flowFile = session.write(flowFile, (inputStream, outputStream) -> {
 				
@@ -111,7 +111,7 @@ public class ContentToAttribute extends AbstractProcessor {
 				
             });
 			
-			session.putAttribute(flowFile, attribute, value.get());
+			session.putAttribute(flowFile, attribute, value.get().substring(0, 1024));
 
 			session.transfer(flowFile, REL_SUCCESS);
 			
