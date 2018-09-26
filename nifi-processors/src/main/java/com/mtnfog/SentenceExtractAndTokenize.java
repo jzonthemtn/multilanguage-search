@@ -16,21 +16,14 @@
 package com.mtnfog;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
-
 import org.apache.commons.io.IOUtils;
-import org.apache.joshua.decoder.Decoder;
-import org.apache.joshua.decoder.JoshuaConfiguration;
-import org.apache.joshua.decoder.StructuredTranslation;
-import org.apache.joshua.decoder.Translation;
-import org.apache.joshua.decoder.segment_file.Sentence;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.nifi.annotation.behavior.ReadsAttribute;
 import org.apache.nifi.annotation.behavior.ReadsAttributes;
 import org.apache.nifi.annotation.behavior.SideEffectFree;
@@ -39,7 +32,6 @@ import org.apache.nifi.annotation.behavior.WritesAttributes;
 import org.apache.nifi.annotation.documentation.CapabilityDescription;
 import org.apache.nifi.annotation.documentation.SeeAlso;
 import org.apache.nifi.annotation.documentation.Tags;
-import org.apache.nifi.annotation.lifecycle.OnScheduled;
 import org.apache.nifi.components.PropertyDescriptor;
 import org.apache.nifi.flowfile.FlowFile;
 import org.apache.nifi.processor.AbstractProcessor;
@@ -48,15 +40,20 @@ import org.apache.nifi.processor.ProcessSession;
 import org.apache.nifi.processor.ProcessorInitializationContext;
 import org.apache.nifi.processor.Relationship;
 import org.apache.nifi.processor.exception.ProcessException;
-import org.apache.nifi.processor.util.StandardValidators;
 
-@Tags({ "joshua, nlp, translate" })
-@CapabilityDescription("Performs language translation using Apache Joshua.")
+import opennlp.tools.sentdetect.SentenceDetectorME;
+import opennlp.tools.sentdetect.SentenceModel;
+import opennlp.tools.tokenize.Tokenizer;
+import opennlp.tools.tokenize.TokenizerME;
+import opennlp.tools.tokenize.TokenizerModel;
+
+@Tags({ "opennlp, nlp, sentence" })
+@CapabilityDescription("Performs NLP sentence extraction and tokenization using OpenNLP.")
 @SeeAlso()
 @ReadsAttributes({ @ReadsAttribute(attribute = "") })
 @WritesAttributes({ @WritesAttribute(attribute = "") })
 @SideEffectFree
-public class LangTranslate extends AbstractProcessor {
+public class SentenceExtractAndTokenize extends AbstractProcessor {
 	
 	public static final Relationship REL_SUCCESS = new Relationship.Builder()
 			.name("success").description("success").build();
@@ -67,17 +64,8 @@ public class LangTranslate extends AbstractProcessor {
 	private List<PropertyDescriptor> descriptors;
 	private Set<Relationship> relationships;
 	
-	private Decoder deDecoder;
-	private int counter = 0;
-
-	private static final PropertyDescriptor APACHE_JOSHUA_PATH = new PropertyDescriptor.Builder()
-	        .name("Apache Joshua Path")
-	        .required(true)
-	        .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
-	        .build();
-	
-	private final AtomicReference<String> processorName = new AtomicReference<>(null);
-	private final AtomicReference<String> originalQuery = new AtomicReference<>(null);
+	private SentenceDetectorME detector;
+	private Tokenizer tokenizer;
 	
 	@Override
 	protected void init(final ProcessorInitializationContext context) {
@@ -86,36 +74,25 @@ public class LangTranslate extends AbstractProcessor {
 		relationships.add(REL_SUCCESS);
 		relationships.add(REL_FAILURE);
 		relationships = Collections.unmodifiableSet(relationships);
-			
-		List<PropertyDescriptor> properties = new ArrayList<>();
-	    properties.add(APACHE_JOSHUA_PATH);
-	    descriptors = Collections.unmodifiableList(properties);
-		
-	}
-	
-	@OnScheduled
-	public void setup(ProcessContext context) {
 
-		processorName.set(context.getName());
-		
 		try {
 			
-			final String joshuaPath = context.getProperty(APACHE_JOSHUA_PATH).getValue();
+			final InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("en-sent.bin");
+			final SentenceModel model = new SentenceModel(resourceAsStream);
+			detector = new SentenceDetectorME(model);
+			resourceAsStream.close();
 			
-			String deEnJoshuaConfigFile = joshuaPath + "/joshua.config";
-			JoshuaConfiguration deEnConf = new JoshuaConfiguration();
-			deEnConf.readConfigFile(deEnJoshuaConfigFile);
-			deEnConf.use_structured_output = true;
-			deEnConf.modelRootPath = joshuaPath;
-		
-			deDecoder = new Decoder(deEnConf, deEnJoshuaConfigFile);
-			
+			final InputStream tokenModelStream = this.getClass().getClassLoader().getResourceAsStream("en-token.bin");
+			final TokenizerModel tokenModel = new TokenizerModel(tokenModelStream);
+			tokenizer = new TokenizerME(tokenModel);
+			tokenModelStream.close();
+
 		} catch (IOException ex) {
-			
-			getLogger().error("Unable to initialize langtranslate processor: " + ex.getMessage());
-			
+
+			getLogger().error("Unable to initialize processor: " + ex.getMessage());
+
 		}
-		
+
 	}
 
 	@Override
@@ -130,7 +107,7 @@ public class LangTranslate extends AbstractProcessor {
 
 	@Override
 	public void onTrigger(final ProcessContext ctx,	final ProcessSession session) throws ProcessException {
-
+		
 		FlowFile flowFile = session.get();
 
 		if (flowFile == null) {
@@ -138,29 +115,34 @@ public class LangTranslate extends AbstractProcessor {
 		}
 
 		try {
-
+						
 			flowFile = session.write(flowFile, (inputStream, outputStream) -> {
 
-                final String input = IOUtils.toString(inputStream, Charset.forName("UTF-8"));
+                final String input = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+                final String[] sentences = detector.sentDetect(input);
 
-                originalQuery.set(input);
-
-                Sentence sentence = new Sentence(input, counter++, deDecoder.getJoshuaConfiguration());
-                Translation translation = deDecoder.decode(sentence);
-
-                List<StructuredTranslation> translations = translation.getStructuredTranslations();
-                String t = translations.get(0).getFormattedTranslationString()
-                    + ":" + translations.get(0).getTranslationScore();
-
-                IOUtils.write(t, outputStream, StandardCharsets.UTF_8);
+                // Tokenize each sentence.
+                
+                StringBuilder sb = new StringBuilder();
+                
+                for(String sentence : sentences) {
+                	
+                	String tokenizedSentence = StringUtils.join(tokenizer.tokenize(sentence), " ") + "\n";
+                	sb.append(tokenizedSentence);
+                	
+                }
+                
+                // Write the tokenized sentences back to the content.
+                
+                IOUtils.write(sb.toString(), outputStream, StandardCharsets.UTF_8);
 
             });
 
 			session.transfer(flowFile, REL_SUCCESS);
-
+			
 		} catch (Exception ex) {
 			
-			getLogger().error(String.format("Unable to translate language. Exception: %s", ex.getMessage()), ex);
+			getLogger().error(String.format("Unable to detect language. Exception: %s", ex.getMessage()), ex);
 			session.transfer(flowFile, REL_FAILURE);
 			
 		}
