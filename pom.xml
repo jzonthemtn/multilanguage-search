@@ -12,13 +12,10 @@
 	<packaging>pom</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<lucene.version>7.0.0</lucene.version>
-		<joshua.version>6.1</joshua.version>
 		<nifi.version>1.7.1</nifi.version>
 		<opennlp.version>1.8.4</opennlp.version>
 	</properties>
 	<modules>
-		<module>multilanguage-search-runner</module>
 		<module>nifi-processors</module>
 		<module>nifi-processors-nar</module>
 	</modules>
