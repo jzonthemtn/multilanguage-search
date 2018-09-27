@@ -15,13 +15,17 @@
  */
 package com.mtnfog;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.nifi.annotation.behavior.ReadsAttribute;
@@ -138,9 +142,11 @@ public class SentenceExtractAndTokenize extends AbstractProcessor {
                 
             });
 			
-			// Write the tokenized text to an attribute.
-            session.putAttribute(flowFile, "tokenized", sb.toString());
-
+			// Write the tokenized text to a temporary file.
+			File tempFile = File.createTempFile("prefix-", "-suffix");
+			FileUtils.writeStringToFile(tempFile, sb.toString(), Charset.forName("UTF-8"));
+			session.putAttribute(flowFile, "tokenizedfile", tempFile.getAbsolutePath());
+			
 			session.transfer(flowFile, REL_SUCCESS);
 			
 		} catch (Exception ex) {
