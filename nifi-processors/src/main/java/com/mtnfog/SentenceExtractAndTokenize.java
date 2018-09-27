@@ -115,15 +115,15 @@ public class SentenceExtractAndTokenize extends AbstractProcessor {
 		}
 
 		try {
-						
+						            
+            StringBuilder sb = new StringBuilder();
+			
 			flowFile = session.write(flowFile, (inputStream, outputStream) -> {
 
                 final String input = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
                 final String[] sentences = detector.sentDetect(input);
 
                 // Tokenize each sentence.
-                
-                StringBuilder sb = new StringBuilder();
                 
                 for(String sentence : sentences) {
                 	
@@ -135,8 +135,11 @@ public class SentenceExtractAndTokenize extends AbstractProcessor {
                 // Write the tokenized sentences back to the content.
                 
                 IOUtils.write(sb.toString(), outputStream, StandardCharsets.UTF_8);
-
+                
             });
+			
+			// Write the tokenized text to an attribute.
+            session.putAttribute(flowFile, "tokenized", sb.toString());
 
 			session.transfer(flowFile, REL_SUCCESS);
 			

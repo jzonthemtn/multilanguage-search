@@ -111,7 +111,7 @@ public class ContentToAttribute extends AbstractProcessor {
 				
             });
 			
-			session.putAttribute(flowFile, attribute, value.get().substring(0, 1024));
+			session.putAttribute(flowFile, attribute, value.get().substring(0, Integer.max(value.get().length(), 4096)));
 
 			session.transfer(flowFile, REL_SUCCESS);
 			
