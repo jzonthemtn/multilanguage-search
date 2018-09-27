@@ -143,7 +143,7 @@ public class SentenceExtractAndTokenize extends AbstractProcessor {
             });
 			
 			// Write the tokenized text to a temporary file.
-			File tempFile = File.createTempFile("prefix-", "-suffix");
+			File tempFile = File.createTempFile("mls-", ".txt");
 			FileUtils.writeStringToFile(tempFile, sb.toString(), Charset.forName("UTF-8"));
 			session.putAttribute(flowFile, "tokenizedfile", tempFile.getAbsolutePath());
 			
