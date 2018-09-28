@@ -17,7 +17,7 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>haystack18</groupId>
+            <groupId>com.mtnfog</groupId>
             <artifactId>nifi-processors</artifactId>
             <version>${project.version}</version>
         </dependency>
