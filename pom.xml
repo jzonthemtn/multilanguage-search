@@ -6,9 +6,9 @@
 		<artifactId>nifi-nar-bundles</artifactId>
 		<version>1.7.1</version>
 	</parent>
-	<groupId>haystack18</groupId>
+	<groupId>com.mtnfog</groupId>
 	<artifactId>multilang-search</artifactId>
-	<version>0.2-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
